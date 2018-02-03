@@ -18,7 +18,7 @@ pip install -r requirements.txt
 
 # Scraping
 
-Esta parte usa Scrapy para funcionar
+Esta parte usa [Scrapy](https://scrapy.org).
 
 ## Instalando base de nombres:
 
