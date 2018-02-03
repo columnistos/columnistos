@@ -378,6 +378,10 @@ def get_stats(site):
         row = next(result, None)
         # TODO chequear que en los días intermedios tenga notas sobre todo por
         # casos como perfil
+        # TODO days no sirve por que las notas siguen apareciendo durante las
+        # primeras horas del día siguiente, hay que agregar a la BD
+        # otra columna/s para llevar la cuenta de días seguidos sin notas de
+        # un genero
         if row:
             last_seen = datetime.datetime.strptime(
                 ''.join(row['last_seen'].rsplit(':', 1)),

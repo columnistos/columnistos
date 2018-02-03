@@ -1,3 +1,7 @@
+# Intro
+Código de [@columnistos]. Idea de [@rusosnith](https://twitter.com/rusosnith), programado por [@j_e_d](https://twitter.com/j_e_d).
+Hay funcionalidades que tenía pensadas implementar que quedaron a medio camino, pero todo anda por el momento. PRs bienvenidos.
+
 # Instalación
 - Crear un virtualenv de Python 3
 ```
@@ -34,17 +38,25 @@ Por el momento esa base solo va a tener la tabla `names`.
 runcrawlers.sh
 ```
 
-En la carpeta `./diarios/diarios/spiders/` aparte del scaper de nombres hay 4 scrapers para los medios argentinos que por el momento sigue @columnistos.
+En la carpeta [`./diarios/diarios/spiders/`](diarios/diarios/spiders/) aparte del scaper de nombres hay 4 scrapers para los medios argentinos que por el momento sigue [@columnistos].
 El scaper de Clarín (clarin.py) es distinto a los demas por que la página principal de ese diario no carga por completo cuando se pide el home, hay que cargar el resto de la página pidiendo algunos json adicionales.
 Para cada scraper se tiene que analizar la página buscando lo que consideramos columnas de opinión y usando selectores xpath o css pasar a `DiariosItem` el titulo, el autor y el url.
-En `./diarios/diarios/pipelines.py` está el código que procesa los items que se encuentan en cada medio.  
+En [`./diarios/diarios/pipelines.py`](diarios/diarios/pipelines.py) está el código que procesa los items que se encuentan en cada medio.  
 
 # Twitter
-Para lo que sigue se necesitas una cuenta de Twitter para el bot con permisos para usar la API de Twitter
+Para lo que sigue se necesitas una cuenta de Twitter para el bot con permisos para usar la API de Twitter, usando una cuenta distinta a la personal ir a [apps.twitter.com](https://apps.twitter.com/), necesitan los datos para completar en los siguientes `.sh` las variables:
+```
+export TWITTER_CONSUMER_KEY=""
+export TWITTER_CONSUMER_SECRET=""
+export TWITTER_ACCESS_TOKEN=""
+export TWITTER_ACCESS_TOKEN_SECRET=""
+
+```
 
 ## Mandar y chequear DMs 
 
 Esto es para los casos en que no se puede determinar el genero de autores, se pide ayuda a una o varias personas.
+Cada vez que corre revisa si hay autores con genero indeterminado, si hay manda un DM a la cuenta que se indique en el código con la consulta del genero. Cada vez que corre también se fija si recibió alguna respuesta y en caso de que suceda intenta procesarla. 
 
 ```
 runbotdm.sh
@@ -52,11 +64,20 @@ runbotdm.sh
 
 ## Mandar informe diario
 
+Este es el paso que genera los tweets del resumen del día anterior al que se corre y los tweets de cada medio en caso de que se cumplan ciertas condiciones.
+
 ```
 runbottweet.sh
 ```
 
 # Cron
-Para que todo funcione automaticamente hay que agregar los `.sh` a algún cronjob.
+Para que todo funcione automaticamente hay que agregar los `.sh` a algún cronjob. En el caso de [@columnistos] la configuración actual es:
+
+```
+30 * * * * $HOME/columnistos/runcrawlers.sh
+*/15 * * * * $HOME/columnistos/runbotdm.sh
+0 10 * * * $HOME/columnistos/runbottweet.sh
+```
 
 
+[@columnistos]: https://twitter.com/columnistos
