@@ -6,9 +6,8 @@ import scrapy
 
 class NombresSpider(scrapy.Spider):
     name = 'nombres'
-    # parse it from local web server
+    # parse it from local file
     cwd = os.getcwd()
-    print(cwd)
     start_urls = [f'file:////127.0.0.1/{cwd}/Nombres.html']
 
     custom_settings = {
