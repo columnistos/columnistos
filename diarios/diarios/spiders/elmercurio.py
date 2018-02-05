@@ -9,6 +9,9 @@ class ElmercurioSpider(scrapy.Spider):
     name = 'elmercurio'
     allowed_domains = ['www.elmercurio.com/blogs']
     start_urls = ['http://www.elmercurio.com/blogs']
+    custom_settings = {
+        'ROBOTSTXT_OBEY': False,
+    }
 
     def parse(self, response):
         """
@@ -22,7 +25,6 @@ class ElmercurioSpider(scrapy.Spider):
             yield self.parse_article(selector, response)
 
     def parse_article(self, selector, response):
-        print(selector)
         loader = ItemLoader(DiariosItem(), selector=selector)
         #
         loader.add_xpath('author', './/p//strong//text()')
