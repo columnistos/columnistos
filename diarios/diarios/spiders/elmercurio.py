@@ -30,6 +30,4 @@ class ElmercurioSpider(scrapy.Spider):
         loader.add_xpath('author', './/p//strong//text()')
         loader.add_xpath('title', './/a//text()')
         loader.add_xpath('url', './/@href')
-        print(loader.__dict__.keys())
-        print(loader._local_values)
         return loader.load_item()

@@ -27,6 +27,4 @@ class LaterceraSpider(scrapy.Spider):
         loader.add_xpath('author', './/p//small[2]//a//text()')
         loader.add_xpath('title', './/h4//text()')
         loader.add_xpath('url', './/h4//@href')
-        print(loader.__dict__.keys())
-        print(loader._local_values)
         return loader.load_item()

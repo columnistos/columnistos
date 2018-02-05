@@ -35,7 +35,7 @@ La mayoría de los nombres de está base no tienen tilde, algunos pocos si. Cuan
 
 El algoritmo que determina el genero en base al nombre solo considera primer nombre.
 
-Una vez que el scraper de nombres termina debería crear una base `diarios.sqlite` en la carpeta [`./diarios`](diarios/) desde donde se corrió el comando. 
+Una vez que el scraper de nombres termina debería crear una base `diarios.sqlite` en la carpeta [`./diarios`](diarios/) desde donde se corrió el comando.
 
 Por el momento esa base solo va a tener la tabla `names`.
 
@@ -44,9 +44,17 @@ Este paso es necesario unicamente al instalar.
 
 ## Scraping de los diarios:
 
+Para los diarios de Argentina:
+
 ```
-runcrawlers.sh
+./runcrawlers.sh
 ```
+
+Para los diarios de Chile:
+```
+./runcrawlers_chile.sh
+```
+
 
 En la carpeta [`./diarios/diarios/spiders/`](diarios/diarios/spiders/) aparte del scaper de nombres hay 4 scrapers para los medios argentinos que por el momento sigue [@columnistos].
 
@@ -57,6 +65,7 @@ Para cada scraper se tiene que analizar la página buscando lo que consideramos 
 En [`./diarios/diarios/pipelines.py`](diarios/diarios/pipelines.py) está el código que procesa los items que se encuentan en cada medio.
 
 En la base se va a crear una table `articles` para los artículos y otra `authors` con nombres completos de autores. Cada articulo tiene un autor asociado. En la tabla `authors` se indica el genero en base a lo que se encontró en la tabla `names` del paso anterior. Los que en este paso queden sin un genero definido son los que se enviaran por DM.
+
 
 # Twitter
 
@@ -70,7 +79,7 @@ export TWITTER_ACCESS_TOKEN_SECRET=""
 
 ```
 
-## Mandar y chequear DMs 
+## Mandar y chequear DMs
 
 Esto es para los casos en que no se puede determinar el genero de autores, se pide ayuda a una o varias personas.
 
