@@ -56,9 +56,9 @@ Para los diarios de Chile:
 ```
 
 
-En la carpeta [`./diarios/diarios/spiders/`](diarios/diarios/spiders/) aparte del scaper de nombres hay 4 scrapers para los medios argentinos que por el momento sigue [@columnistos]. Además existen, hasta el momento, 2 scrapers para medios chilenos.
+En la carpeta [`./diarios/diarios/spiders/`](diarios/diarios/spiders/) aparte del scaper de nombres hay sub carpetas que agrupan los scrapers por país. En `/ar` están los medios argentinos que por el momento sigue [@columnistos]. En `/cl` hay scrapers para medios chilenos.
 
-El scaper de Clarín (clarin.py) es distinto a los demas por que la página principal de ese diario no carga por completo cuando se pide el home, hay que cargar el resto de la página pidiendo algunos json adicionales.
+El scraper de Clarín (clarin.py) es distinto a los demas por que la página principal de ese diario no carga por completo cuando se pide el home, hay que cargar el resto de la página pidiendo algunos json adicionales.
 
 Para cada scraper se tiene que analizar la página buscando lo que consideramos columnas de opinión y usando selectores xpath o css pasar a `DiariosItem` el titulo, el autor y el url.
 
