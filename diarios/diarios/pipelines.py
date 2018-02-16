@@ -40,10 +40,12 @@ class StorePipeline(object):
         transform_tuples = [('á', 'a'), ('é', 'e'), ('í', 'i'), ('ó', 'o'),
                             ('ú', 'u'), ('ñ', 'n'), ('Á', 'A'), ('É', 'E'),
                             ('Í', 'I'), ('Ó', 'O'), ('Ú', 'U'), ('Ñ', 'N')]
-        name_no_accents = name
+        name_no_accents = name.encode('utf-8')
         for x, y in transform_tuples:
             if x in name_no_accents:
                 name_no_accents = name_no_accents.replace(x, y)
+
+
 
         if name_table.count(name=name) == 0 and name_table.count(
                 name=name_no_accents) == 0:
