@@ -55,6 +55,10 @@ Para los diarios de Chile:
 ./runcrawlers_chile.sh
 ```
 
+Para los diarios de Paraguay:
+```
+./runcrawlers_paraguay.sh
+```
 
 En la carpeta [`./diarios/diarios/spiders/`](diarios/diarios/spiders/) aparte del scaper de nombres hay sub carpetas que agrupan los scrapers por país. En `/ar` están los medios argentinos que por el momento sigue [@columnistos]. En `/cl` hay scrapers para medios chilenos.
 
