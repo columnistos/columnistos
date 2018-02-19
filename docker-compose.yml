@@ -6,9 +6,9 @@ services:
       context: .
       dockerfile: Dockerfile
     #restart: unless-stopped
+    env_file: docker.env
     volumes:
-      - ./diarios:/usr/src/app/diarios
-
+      - .:/usr/src/app
 volumes:
   db:
 
