@@ -5,29 +5,29 @@ from scrapy.loader import ItemLoader
 from diarios.items import DiariosItem
 
 
-class ElmercurioSpider(scrapy.Spider):
-    name = 'elmercurio'
-    allowed_domains = ['www.elmercurio.com/blogs']
-    start_urls = ['http://www.elmercurio.com/blogs']
+class UltimahoraSpider(scrapy.Spider):
+    name = 'ultimahora'
+    allowed_domains = ['www.ultimahora.com']
+    start_urls = ['http://www.ultimahora.com']
     custom_settings = {
         'ROBOTSTXT_OBEY': False,
     }
 
     def parse(self, response):
         """
-        @url http://www.elmercurio.com/blogs
+        @url http://www.ultimahora.com
         @returns items 1 14
         @returns requests 0 0
         @scrapes author title url
         """
-        selectors = response.xpath('//*[@id="contenedor_columnistas_home"]/div[3]/ul/li')
+        selectors = response.xpath('//*[@class="object-opinion-2016"]/div[2]/div/div')
         for selector in selectors:
             yield self.parse_article(selector, response)
 
     def parse_article(self, selector, response):
         loader = ItemLoader(DiariosItem(), selector=selector)
         #
-        loader.add_xpath('author', './/p//strong//text()')
-        loader.add_xpath('title', './/a//text()')
-        loader.add_xpath('url', './/@href')
+        loader.add_xpath('author', './/span//a//text()')
+        loader.add_xpath('title', './/h3//a//text()')
+        loader.add_xpath('url', './/h3//@href')
         return loader.load_item()

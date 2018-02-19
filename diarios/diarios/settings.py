@@ -11,7 +11,7 @@
 
 BOT_NAME = 'diarios'
 
-SPIDER_MODULES = ['diarios.spiders', 'diarios.spiders.ar', 'diarios.spiders.cl']
+SPIDER_MODULES = ['diarios.spiders', 'diarios.spiders.ar', 'diarios.spiders.cl', 'diarios.spiders.py']
 NEWSPIDER_MODULE = 'diarios.spiders'
 
 SQLITE_URL = 'sqlite:///diarios.sqlite'
