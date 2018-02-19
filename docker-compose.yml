@@ -1,0 +1,14 @@
+version: '2'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    #restart: unless-stopped
+    volumes:
+      - ./diarios:/usr/src/app/diarios
+
+volumes:
+  db:
+
