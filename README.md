@@ -55,6 +55,10 @@ Para los diarios de Chile:
 ./runcrawlers_chile.sh
 ```
 
+Para los diarios de Paraguay:
+```
+./runcrawlers_paraguay.sh
+```
 
 En la carpeta [`./diarios/diarios/spiders/`](diarios/diarios/spiders/) aparte del scaper de nombres hay sub carpetas que agrupan los scrapers por país. En `/ar` están los medios argentinos que por el momento sigue [@columnistos]. En `/cl` hay scrapers para medios chilenos.
 
@@ -108,6 +112,24 @@ Para que todo funcione automaticamente hay que agregar los `.sh` a algún cronjo
 */15 * * * * $HOME/columnistos/runbotdm.sh
 0 10 * * * $HOME/columnistos/runbottweet.sh
 ```
+# Instalación y uso con Docker
 
+**1.** Copiar el archivo **docker.env-sample** a **docker.env** y agregar los valores deseados. También copiar **docker-run.sh-sample** a **docker-run.sh** y cambiar los valores de los crawls según el país. 
+
+**2.** Correr la instalación (si es que no hay base) y el crawler:
+```
+docker-compose up
+```
+
+**3.** Correr el dm
+```
+docker-compose run app python columnistos_bot.py -dm
+```
+
+**4.** Correr el tweet
+```
+docker-compose run app python columnistos_bot.py -tweet
+```
+Si se desea comenzar con base nueva, borrar diarios/diarios.sqlite y volver al punto 2
 
 [@columnistos]: https://twitter.com/columnistos

@@ -1,3 +1,10 @@
+# Local database
+# No queremos que se haga commit de la base 
+diarios.sqlite
+*.env
+nbproject/
+docker-run.sh
+
 # Project specific
 *.flag
 

@@ -45,6 +45,8 @@ class StorePipeline(object):
             if x in name_no_accents:
                 name_no_accents = name_no_accents.replace(x, y)
 
+
+
         if name_table.count(name=name) == 0 and name_table.count(
                 name=name_no_accents) == 0:
             return None
