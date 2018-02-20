@@ -1,0 +1,14 @@
+version: '2'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    #restart: unless-stopped
+    env_file: docker.env
+    volumes:
+      - .:/usr/src/app
+volumes:
+  db:
+

@@ -28,7 +28,10 @@ COMPLETE_NAMES = {
     'clarin': 'Clarín',
     'lanacion': 'La Nación',
     'pagina12': 'Página/12',
-    'perfil': 'Perfil'
+    'perfil': 'Perfil',
+    'abc': 'ABC Color',
+    'lanacionpy': 'La Nación',
+    'ultimahora': 'Última Hora'
 }
 MIN_NEW_ARTICLES = 2
 MIN_PERCENT_SOME = 45
