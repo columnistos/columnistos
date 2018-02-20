@@ -114,7 +114,7 @@ Para que todo funcione automaticamente hay que agregar los `.sh` a algún cronjo
 ```
 # Instalación y uso con Docker
 
-**1.** Copiar el archivo **docker.env-sample** a **docker.env** y agregar los valores deseados. Además verificar que **docker-run.sh** corra el comando del país deseado. 
+**1.** Copiar el archivo **docker.env-sample** a **docker.env** y agregar los valores deseados. También copiar **docker-run.sh-sample** a **docker-run.sh** y cambiar los valores de los crawls según el país. 
 
 **2.** Correr la instalación (si es que no hay base) y el crawler:
 ```

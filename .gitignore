@@ -2,6 +2,9 @@
 # No queremos que se haga commit de la base 
 diarios.sqlite
 *.env
+nbproject/project.properties
+nbproject/project.xml
+docker-run.sh
 
 # Project specific
 *.flag

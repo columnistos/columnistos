@@ -12,5 +12,7 @@ else
   cd diarios && scrapy crawl nombres
 fi
 
-# Ahora sí corro el crawler
-cd /usr/src/app && ./runcrawlers_paraguay.sh
+# Ahora sí corro los crawlers. Comente y descomente a gusto
+cd /usr/src/app && ./runcrawlers.sh
+#cd /usr/src/app && ./runcrawlers_chile.sh
+#cd /usr/src/app && ./runcrawlers_paraguay.sh
