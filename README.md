@@ -69,7 +69,7 @@ En la base se va a crear una table `articles` para los artículos y otra `author
 
 # Twitter
 
-Para lo que sigue se necesitas una cuenta de Twitter para el bot con permisos para usar la API de Twitter, usando una cuenta distinta a la personal ir a [apps.twitter.com](https://apps.twitter.com/), necesitan los datos para completar en los siguientes `.sh` las variables:
+Para lo que sigue se necesitas crear una nueva cuenta de Twitter desde la cuál van a mandar los mensajes y crear una app para que esa cuenta tenga permisos para usar la API de Twitter. Usando la nueva cuenta de ir a [apps.twitter.com](https://apps.twitter.com/), necesitan los datos para completar en los siguientes `.sh` las variables:
 
 ```
 export TWITTER_CONSUMER_KEY=""
@@ -85,7 +85,7 @@ Esto es para los casos en que no se puede determinar el genero de autores, se pi
 
 Cada vez que corre revisa si hay autores con genero indeterminado, si hay manda un DM a la cuenta que se indique en el código con la consulta del genero. Cada vez que corre también se fija si recibió alguna respuesta y en caso de que suceda intenta procesarla.
 
-Si se envia a más de una persona y las respuestas no coinciden el bot les informa que eso sucedió para que se pongan de acuerdo y definan.
+Si se envia a más de una persona y las respuestas no coinciden la cuenta bot les informa que eso sucedió para que se pongan de acuerdo y definan.
 
 ```
 runbotdm.sh
