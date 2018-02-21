@@ -9,6 +9,7 @@ services:
     env_file: docker.env
     volumes:
       - .:/usr/src/app
+      - /etc/localtime:/etc/localtime:ro
 volumes:
-  db:
-
+  app:
+  time:
