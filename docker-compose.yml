@@ -10,6 +10,3 @@ services:
     volumes:
       - .:/usr/src/app
       - /etc/localtime:/etc/localtime:ro
-volumes:
-  app:
-  time:
