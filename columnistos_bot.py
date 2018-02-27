@@ -38,7 +38,7 @@ MIN_PERCENT_SOME = 45
 
 
 NO_WOMAN = [
-    'Ayer en la página principal de {medio} no hubo níngúna columna ' +
+    'Ayer en la página principal de {medio} no hubo ningúna columna ' +
     'de opinión {escrita} por mujeres.',
 
     'Las {total} columnas de opinión de la página principal de {medio}, ' +
@@ -91,14 +91,14 @@ ALL_WOMAN = [
 
 ALL_WOMAN_DAY = [
     'Ayer y antes de ayer, en la página principal de {medio}, ' +
-    'no hubo níngúna columna de opinión {escrita} por varones.',
+    'no hubo ningúna columna de opinión {escrita} por varones.',
 
     'Ayer y antes de ayer, en la página principal de {medio}, ' +
     'todas las columnas de opinión fueron {escritas} por mujeres.']
 
 ALL_WOMAN_DAYS = [
     'Ayer y los {dias} días anteriores, en la página principal de {medio}, ' +
-    'no hubo níngúna columna de opinión {escrita} por varones.',
+    'no hubo ningúna columna de opinión {escrita} por varones.',
 
     'Ayer y los {dias} días anteriores, en la página principal de {medio}, ' +
     'todas las columnas de opinión fueron {escritas} por mujeres.']
