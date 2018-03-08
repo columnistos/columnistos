@@ -1,8 +1,10 @@
 # Intro
 
-Código de [@columnistos]. Idea de [@rusosnith](https://twitter.com/rusosnith), programado por [@j_e_d](https://twitter.com/j_e_d).
+Columnistos fue concebido por [@rusosnith](https://twitter.com/rusosnith) y programado por [@j_e_d](https://twitter.com/j_e_d). La versión original está en (https://github.com/j-e-d/columnistos). 
 
-Hay funcionalidades que tenía pensadas implementar que quedaron a medio camino, pero todo anda por el momento. PRs bienvenidos.
+[TEDIC](https://www.tedic.org) hizo una adaptación para Paraguay y trata de colaborar con mejoras al proyecto original. Los resultados saldrán diariamente por el usuario [twitter de TEDIC](https://twitter.com/TEDICpy). 
+
+Otro de nuestros aportes fue la adaptación y uso a través de Docker **(Ver más abajo)**. 
 
 # Instalación
 
@@ -81,7 +83,7 @@ export TWITTER_CONSUMER_SECRET=""
 export TWITTER_ACCESS_TOKEN=""
 export TWITTER_ACCESS_TOKEN_SECRET=""
 
-```
+```https://github.com/j-e-d/columnistos
 
 ## Mandar y chequear DMs
 
