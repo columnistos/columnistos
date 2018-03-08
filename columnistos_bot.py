@@ -437,10 +437,6 @@ def main():
     # DMs
     if args['dm']:
         logging.info('Checking if DM needed')
-        if not os.path.isfile('./dmneeded.flag'):
-            logging.info('No DM needed')
-            logging.info('Script finished')
-            exit()
         logging.info('Need to send/process DM')
         check_dms(api)
         data_to_send = get_author_no_gender()
