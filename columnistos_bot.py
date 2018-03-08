@@ -7,6 +7,8 @@ import os
 import random
 import sys
 
+from urllib.parse import urlencode
+
 import dataset
 import tweepy
 
@@ -283,9 +285,22 @@ def send_dms(api, texts_to_dm):
     for user in AUTHORIZED_IDS:
         try:
             for text in texts_to_dm:
+                ddg_qs = {
+                    'q': f'{text["author"]}',
+                    'iax': 'images',
+                    'ia': 'images'
+                }
+                google_qs = {
+                    'q': f'{text["author"]}',
+                    'tbm': 'isch'
+                }
                 dm = ("Nuevo autor {author} con Id {id}, respondé {id} f "
-                      "o {id} v o {id} x").format(
-                          author=text['author'],  id=text['id'])
+                      "o {id} v o {id} x\n"
+                      "DDG Images: https://duckduckgo.com/?{ddg}\n"
+                      "Google Images: https://google.com/?{google}"
+                      ).format(
+                          author=text['author'],  id=text['id'],
+                          ddg=urlencode(ddg_qs), google=urlencode(google_qs))
                 api.send_direct_message(user_id=user, text=dm)
                 # add/update in table of sent DMs
                 dms.upsert(dict(author_id=text['id'],
