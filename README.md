@@ -1,7 +1,8 @@
 # Intro
 
 Código de [@columnistos]. Idea de [@rusosnith](https://twitter.com/rusosnith), programado originalmente por [@j_e_d](https://twitter.com/j_e_d).
-Autores en [collaborators.md].
+
+Autores en [COLLABORATORS.md].
 
 PRs bienvenidos.
 
@@ -134,4 +135,4 @@ docker-compose run app python columnistos_bot.py -tweet
 Si se desea comenzar con base nueva, borrar diarios/diarios.sqlite y volver al punto 2
 
 [@columnistos]: https://twitter.com/columnistos
-[collaborators.md]: collaborators.md
+[COLLABORATORS.md]: COLLABORATORS.md

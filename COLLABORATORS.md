@@ -2,11 +2,11 @@
 
 Columnistos es fruto del trabajo de:
 
-[bauerpy]
-[daquiroz]
-[j-e-d]
-[lupa18]
-[rusosnith]
+|[bauerpy]|
+|[daquiroz]|
+|[j-e-d]|
+|[lupa18]|
+|[rusosnith]|
 
 [bauerpy]: https://github.com/bauerpy
 [daquiroz]: https://github.com/daquiroz
