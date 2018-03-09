@@ -15,7 +15,7 @@ Columnistos es fruto del trabajo de:
 [daquiroz]: https://github.com/daquiroz
 [@DaniAQO]: https://twitter.com/DaniAQO
 [j-e-d]: https://github.com/j-e-d
-[@j_e_d]: https:://twitter.com/j_e_d
+[@j_e_d]: https://twitter.com/j_e_d
 [lupa18]: https://github/lupa18
 [@lupa18]: https://twitter.com/lupa18
 [rusosnith]: https://github.com/rusosnith
