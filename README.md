@@ -83,8 +83,6 @@ export TWITTER_CONSUMER_SECRET=""
 export TWITTER_ACCESS_TOKEN=""
 export TWITTER_ACCESS_TOKEN_SECRET=""
 
-```https://github.com/j-e-d/columnistos
-
 ## Mandar y chequear DMs
 
 Esto es para los casos en que no se puede determinar el genero de autores, se pide ayuda a una o varias personas.
