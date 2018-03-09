@@ -114,7 +114,7 @@ DAILY_REPORT = [
 
     'De las columnas de opinión publicadas ayer en las páginas principales, ' +
     'estas son en porcentaje, las que fueron {escritas} por mujeres:',
- 
+
     'De las columnas de opinión publicadas ayer en las páginas principales, ' +
     'estas son en porcentaje, las {escritas} por mujeres:'
 ]
@@ -289,12 +289,12 @@ def send_dms(api, texts_to_dm):
         try:
             for text in texts_to_dm:
                 ddg_qs = {
-                    'q': f'{text["author"]}',
+                    'q': text['author'],
                     'iax': 'images',
                     'ia': 'images'
                 }
                 google_qs = {
-                    'q': f'{text["author"]}',
+                    'q': text['author'],
                     'tbm': 'isch'
                 }
                 dm = ("Nuevo autor {author} con Id {id}, respondé {id} f "
