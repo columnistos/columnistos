@@ -29,10 +29,13 @@ class LanacionpySpider(scrapy.Spider):
 
     
     def parse_article(self, response):
+        import re
         selector = response.xpath('//*[@id="article-content"]')
         loader = ItemLoader(DiariosItem(), selector=selector)
         #capitalizar el titulo y quitar los 4 primeros caracteres que es el "Por "
-        loader.add_value('author', response.xpath('//strong//text()').extract_first().title()[4:])
+        autor = response.xpath('//strong//text()').extract_first().title()[4:]
+        autor = re.sub('[^a-zA-ZñÑáéíóúÁÉÍÓÚ ]', '', autor)
+        loader.add_value('author', autor)
         loader.add_value('title', response.xpath('//*[@class="headline huge normal-style "]/a/text()').extract_first())
         loader.add_value('url', response.request.url)
         return loader.load_item()
