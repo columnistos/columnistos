@@ -7,6 +7,8 @@ import os
 import random
 import sys
 
+from urllib.parse import urlencode
+
 import dataset
 import tweepy
 
@@ -39,7 +41,7 @@ MIN_PERCENT_SOME = 45
 
 
 NO_WOMAN = [
-    'Ayer en la página principal de {medio} no hubo níngúna columna ' +
+    'Ayer en la página principal de {medio} no hubo ningúna columna ' +
     'de opinión {escrita} por mujeres.',
 
     'Las {total} columnas de opinión de la página principal de {medio}, ' +
@@ -92,14 +94,14 @@ ALL_WOMAN = [
 
 ALL_WOMAN_DAY = [
     'Ayer y antes de ayer, en la página principal de {medio}, ' +
-    'no hubo níngúna columna de opinión {escrita} por varones.',
+    'no hubo ningúna columna de opinión {escrita} por varones.',
 
     'Ayer y antes de ayer, en la página principal de {medio}, ' +
     'todas las columnas de opinión fueron {escritas} por mujeres.']
 
 ALL_WOMAN_DAYS = [
     'Ayer y los {dias} días anteriores, en la página principal de {medio}, ' +
-    'no hubo níngúna columna de opinión {escrita} por varones.',
+    'no hubo ningúna columna de opinión {escrita} por varones.',
 
     'Ayer y los {dias} días anteriores, en la página principal de {medio}, ' +
     'todas las columnas de opinión fueron {escritas} por mujeres.']
@@ -108,11 +110,14 @@ DAILY_REPORT = [
     'Porcentaje de columnas de opinión publicadas en la página principal ' +
     '{escritas} por mujeres en el día de ayer:',
 
-    'Ayer en las páginas principales el porcentaje de columnistas de opinión ' +
-    'mujeres fue:',
+    'Ayer en las páginas principales el porcentaje de columnistas de ' +
+    'opinión mujeres fue:',
 
-    'De las columnas de opinión publicadas ayer en la página principal ' +
-    'estos fueron los porcentajes de {escritas} por mujeres:'
+    'De las columnas de opinión publicadas ayer en las páginas principales, ' +
+    'estas son en porcentaje, las que fueron {escritas} por mujeres:',
+
+    'De las columnas de opinión publicadas ayer en las páginas principales, ' +
+    'estas son en porcentaje, las {escritas} por mujeres:'
 ]
 
 
@@ -284,9 +289,22 @@ def send_dms(api, texts_to_dm):
     for user in AUTHORIZED_IDS:
         try:
             for text in texts_to_dm:
+                ddg_qs = {
+                    'q': text['author'],
+                    'iax': 'images',
+                    'ia': 'images'
+                }
+                google_qs = {
+                    'q': text['author'],
+                    'tbm': 'isch'
+                }
                 dm = ("Nuevo autor {author} con Id {id}, respondé {id} f "
-                      "o {id} v o {id} x").format(
-                          author=text['author'],  id=text['id'])
+                      "o {id} v o {id} x\n"
+                      "DDG Images: https://duckduckgo.com/?{ddg}\n"
+                      "Google Images: https://google.com/?{google}"
+                      ).format(
+                          author=text['author'],  id=text['id'],
+                          ddg=urlencode(ddg_qs), google=urlencode(google_qs))
                 api.send_direct_message(user_id=user, text=dm)
                 # add/update in table of sent DMs
                 dms.upsert(dict(author_id=text['id'],
@@ -438,6 +456,10 @@ def main():
     # DMs
     if args['dm']:
         logging.info('Checking if DM needed')
+        if not os.path.isfile('./dmneeded.flag'):
+            logging.info('No DM needed')
+            logging.info('Script finished')
+            exit()
         logging.info('Need to send/process DM')
         check_dms(api)
         data_to_send = get_author_no_gender()
