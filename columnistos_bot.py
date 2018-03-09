@@ -18,8 +18,9 @@ TESTING = os.environ.get('TESTING', 'True') == 'True'
 LOG_FOLDER = os.environ.get('LOG_FOLDER', '')
 
 AUTHORIZED_IDS = [
-    1,  # Twitter user ID number of persons that can send DMs to the bot
-    2,  # and that will receive DM from the bot
+    52449654,  # Twitter user ID number of persons that can send DMs to the bot
+    137449861,
+    813803318,
 ]
 SQLITE_URL = 'sqlite:///diarios/diarios.sqlite'
 HOURS_WAIT_DM = 12
@@ -107,7 +108,7 @@ DAILY_REPORT = [
     'Porcentaje de columnas de opinión publicadas en la página principal ' +
     '{escritas} por mujeres en el día de ayer:',
 
-    'Ayer en las páginas principales el porcentaje de columnistas de opinión '
+    'Ayer en las páginas principales el porcentaje de columnistas de opinión ' +
     'mujeres fue:',
 
     'De las columnas de opinión publicadas ayer en la página principal ' +
