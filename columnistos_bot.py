@@ -112,8 +112,11 @@ DAILY_REPORT = [
     'Ayer en las páginas principales el porcentaje de columnistas de ' +
     'opinión mujeres fue:',
 
-    'De las columnas de opinión publicadas ayer en la página principal ' +
-    'estos fueron los porcentajes de {escritas} por mujeres:'
+    'De las columnas de opinión publicadas ayer en las páginas principales, ' +
+    'estas son en porcentaje, las que fueron {escritas} por mujeres:',
+ 
+    'De las columnas de opinión publicadas ayer en las páginas principales, ' +
+    'estas son en porcentaje, las {escritas} por mujeres:'
 ]
 
 
