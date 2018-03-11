@@ -300,7 +300,7 @@ def send_dms(api, texts_to_dm):
                 dm = ("Nuevo autor {author} con Id {id}, respondé {id} f "
                       "o {id} v o {id} x\n"
                       "DDG Images: https://duckduckgo.com/?{ddg}\n"
-                      "Google Images: https://google.com/?{google}"
+                      "Google Images: https://google.com/search?{google}"
                       ).format(
                           author=text['author'],  id=text['id'],
                           ddg=urlencode(ddg_qs), google=urlencode(google_qs))
