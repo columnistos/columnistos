@@ -2,6 +2,8 @@
 
 Código de [@columnistos]. Idea de [@rusosnith](https://twitter.com/rusosnith), programado originalmente por [@j_e_d](https://twitter.com/j_e_d).
 
+En la cuenta [@TEDICpy](https://twitter.com/TEDICpy) tuitean los números de los diarios Paraguayos.
+
 Autores en [COLLABORATORS.md].
 
 PRs bienvenidos.
