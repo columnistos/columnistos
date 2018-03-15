@@ -19,9 +19,10 @@ from tweepy.error import TweepError
 TESTING = os.environ.get('TESTING', 'True') == 'True'
 LOG_FOLDER = os.environ.get('LOG_FOLDER', '')
 
-AUTHORIZED_IDS = [
-    1,  # Twitter user ID number of persons that can send DMs to the bot
-    2,  # and that will receive DM from the bot
+AUTHORIZED_SCREEN_NAMES = [
+    'admin_screen_name',  # Twitter user name of persons that can send DMs
+    'another_admin_screen_name',  # and that will receive DM from the bot
+    # use 'screen_name' NOT '@screen_name'
 ]
 SQLITE_URL = 'sqlite:///diarios/diarios.sqlite'
 HOURS_WAIT_DM = 12
@@ -204,7 +205,7 @@ def check_dms(api):
     dms = db['dms']
     authors = db['authors']
     for dm in response:
-        if dm.sender.id not in AUTHORIZED_IDS:
+        if dm.sender.screen_name not in AUTHORIZED_SCREEN_NAMES:
             logging.warning(
                 'DM from unauthorized account {} with id {}'.format(
                     dm.sender.screen_name, dm.sender.id))
@@ -256,9 +257,9 @@ def check_dms(api):
                             author['author'], author['id'])
                     )
                 else:
-                    for admin_id in AUTHORIZED_IDS:
+                    for admin_screen_name in AUTHORIZED_SCREEN_NAMES:
                         api.send_direct_message(
-                            user_id=admin_id,
+                            screen_name=admin_screen_name,
                             text=("Tu respuesta de {} no coincide con otras "
                                   "cuando se pongan de acuerdo manden {} g! "
                                   "(g = f/v/x)").format(
@@ -286,7 +287,7 @@ def check_dms(api):
 def send_dms(api, texts_to_dm):
     db = dataset.connect(SQLITE_URL)
     dms = db['dms']
-    for user in AUTHORIZED_IDS:
+    for admin_screen_name in AUTHORIZED_SCREEN_NAMES:
         try:
             for text in texts_to_dm:
                 ddg_qs = {
@@ -305,13 +306,14 @@ def send_dms(api, texts_to_dm):
                       ).format(
                           author=text['author'],  id=text['id'],
                           ddg=urlencode(ddg_qs), google=urlencode(google_qs))
-                api.send_direct_message(user_id=user, text=dm)
+                api.send_direct_message(screen_name=admin_screen_name, text=dm)
                 # add/update in table of sent DMs
                 dms.upsert(dict(author_id=text['id'],
                                 added=datetime.datetime.utcnow()),
                            ['author_id'])
         except TweepError:
-            logging.warning('Sending DM to {} failed'.format(user))
+            logging.warning('Sending DM to {} failed'.format(
+                admin_screen_name))
             return False
     return True
 
