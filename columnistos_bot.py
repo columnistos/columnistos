@@ -256,14 +256,15 @@ def check_dms(api):
                             author['author'], author['id'])
                     )
                 else:
-                    api.send_direct_message(
-                        user_id=dm.sender.id,
-                        text=("Tu respuesta de {} no coincide con otras "
-                              "cuando se pongan de acuerdo manden {} g! "
-                              "(g = f/v/x)").format(
-                            author['author'], author['id']
+                    for admin_id in AUTHORIZED_IDS:
+                        api.send_direct_message(
+                            user_id=admin_id,
+                            text=("Tu respuesta de {} no coincide con otras "
+                                  "cuando se pongan de acuerdo manden {} g! "
+                                  "(g = f/v/x)").format(
+                                author['author'], author['id']
+                            )
                         )
-                    )
             else:
                 authors.update(dict(id=response[0],
                                     gender=response[1][0]),
