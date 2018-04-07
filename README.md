@@ -1,8 +1,12 @@
 # Intro
 
-Código de [@columnistos]. Idea de [@rusosnith](https://twitter.com/rusosnith), programado por [@j_e_d](https://twitter.com/j_e_d).
+Código de [@columnistos]. Idea de [@rusosnith](https://twitter.com/rusosnith), programado originalmente por [@j_e_d](https://twitter.com/j_e_d).
 
-Hay funcionalidades que tenía pensadas implementar que quedaron a medio camino, pero todo anda por el momento. PRs bienvenidos.
+En la cuenta [@TEDICpy](https://twitter.com/TEDICpy) tuitean los números de los diarios Paraguayos.
+
+Autores en [COLLABORATORS.md].
+
+PRs bienvenidos.
 
 # Instalación
 
@@ -133,3 +137,4 @@ docker-compose run app python columnistos_bot.py -tweet
 Si se desea comenzar con base nueva, borrar diarios/diarios.sqlite y volver al punto 2
 
 [@columnistos]: https://twitter.com/columnistos
+[COLLABORATORS.md]: COLLABORATORS.md

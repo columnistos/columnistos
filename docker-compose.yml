@@ -8,7 +8,7 @@ services:
     #restart: unless-stopped
     env_file: docker.env
     volumes:
-      - .:/usr/src/app
+      - app:/usr/src/app
+      - /etc/localtime:/etc/localtime:ro
 volumes:
-  db:
-
+  app:
