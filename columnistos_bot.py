@@ -19,22 +19,23 @@ from tweepy.error import TweepError
 TESTING = os.environ.get('TESTING', 'True') == 'True'
 LOG_FOLDER = os.environ.get('LOG_FOLDER', '')
 
+# Twitter user name of persons that can send DMs
+# and that will receive DM from the bot
+# use 'screen_name' NOT '@screen_name'
 AUTHORIZED_SCREEN_NAMES = [
-    'admin_screen_name',  # Twitter user name of persons that can send DMs
-    'another_admin_screen_name',  # and that will receive DM from the bot
-    # use 'screen_name' NOT '@screen_name'
+    'unahistoriadora',
+    'ladycapybara',
 ]
 SQLITE_URL = 'sqlite:///diarios/diarios.sqlite'
 HOURS_WAIT_DM = 12
-TIMEZONE = 'America/Buenos_Aires'
+TIMEZONE = 'America/Costa Rica'
 COMPLETE_NAMES = {
-    'clarin': 'Clarín',
-    'lanacion': 'La Nación',
-    'pagina12': 'Página/12',
-    'perfil': 'Perfil',
-    'abc': 'ABC Color',
-    'lanacionpy': 'La Nación',
-    'ultimahora': 'Última Hora'
+    'nacion': 'La Nación'
+    # 'crhoy': 'CRHoy',
+    # 'extra': 'La Extra',
+    # 'prensalibre': 'La Prensa Libre',
+    # 'mundocr': 'MundoCR',
+    # 'delfino': 'DelfinoCR'
 }
 MIN_NEW_ARTICLES = 2
 MIN_PERCENT_SOME = 45
@@ -183,12 +184,12 @@ def test_twitter(api):
 
 def tweet_text(api, text_to_tweet):
     if TESTING:
-        print (text_to_tweet)
+        print(text_to_tweet)
         return True
     try:
         api.update_status(status=text_to_tweet)
     except:
-        print (sys.exc_info()[0])
+        print(sys.exc_info()[0])
         return False
     return True
 
@@ -244,10 +245,10 @@ def check_dms(api):
                                         gender=response[1][0]),
                                    ['id'])
                     api.send_direct_message(
-                            user_id=dm.sender.id,
-                            text="Los datos de {} ({}) se cambiaron".format(
-                                author['author'], author['id'])
-                        )
+                        user_id=dm.sender.id,
+                        text="Los datos de {} ({}) se cambiaron".format(
+                            author['author'], author['id'])
+                    )
                     logging.info('Gender of {} set to {}'.format(
                         author['author'], response[1][0]))
                 elif author['gender'] == response[1][0]:
@@ -272,10 +273,10 @@ def check_dms(api):
                                ['id'])
                 dms.delete(author_id=response[0])
                 api.send_direct_message(
-                        user_id=dm.sender.id,
-                        text="Gracias por los datos de {} ({})".format(
-                            author['author'], author['id'])
-                    )
+                    user_id=dm.sender.id,
+                    text="Gracias por los datos de {} ({})".format(
+                        author['author'], author['id'])
+                )
                 logging.info('Gender of {} set to {}'.format(
                     author['author'], response[1][0]))
     with open('last_checked_dm.json', 'w') as lt:
@@ -444,6 +445,7 @@ def main():
 
     # keys
     consumer_key = os.environ['TWITTER_CONSUMER_KEY']
+    print(os.environ['TWITTER_CONSUMER_KEY'])
     consumer_secret = os.environ['TWITTER_CONSUMER_SECRET']
     access_token = os.environ['TWITTER_ACCESS_TOKEN']
     access_token_secret = os.environ['TWITTER_ACCESS_TOKEN_SECRET']
