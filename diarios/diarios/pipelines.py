@@ -10,6 +10,8 @@ import dataset
 
 from pytz import timezone
 
+import json
+import codecs
 
 class StorePipeline(object):
     def __init__(self, sqlite_url, authors_table, articles_table, names_table,
@@ -33,6 +35,10 @@ class StorePipeline(object):
 
     def open_spider(self, spider):
         self.db = dataset.connect(self.sqlite_url)
+        self.file = codecs.open('items.jl', 'w', 'utf-8')
+    
+    def close_spider(self, spider):
+        self.file.close()
 
     def get_gender(self, author):
         name_table = self.db[self.names_table]
@@ -57,6 +63,11 @@ class StorePipeline(object):
         """
         Store data to DB
         """
+
+        #saves to json
+        line = json.dumps(dict(item), ensure_ascii=False) + "\n"
+        self.file.write(line)
+
         # stores author if new
         author_table = self.db[self.authors_table]
 
