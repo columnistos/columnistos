@@ -23,12 +23,12 @@ LOG_FOLDER = os.environ.get('LOG_FOLDER', '')
 # and that will receive DM from the bot
 # use 'screen_name' NOT '@screen_name'
 AUTHORIZED_SCREEN_NAMES = [
-    'unahistoriadora',
     'ladycapybara',
+    'unahistoriadora',
 ]
 SQLITE_URL = 'sqlite:///diarios/diarios.sqlite'
 HOURS_WAIT_DM = 12
-TIMEZONE = 'America/Costa Rica'
+TIMEZONE = 'America/Costa_Rica'
 COMPLETE_NAMES = {
     'nacion': 'La Nación',
     'delfino': 'DelfinoCR'

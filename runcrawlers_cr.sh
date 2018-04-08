@@ -4,3 +4,4 @@ export LOG_FOLDER='./logs/'
 
 cd diarios
 scrapy crawl nacion
+scrapy crawl delfino

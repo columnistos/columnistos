@@ -7,7 +7,7 @@ from diarios.items import DiariosItem
 
 class DelfinoSpider(scrapy.Spider):
     name = 'delfino'
-    allowed_domains = ['nacion.com']
+    allowed_domains = ['delfino.cr']
     start_urls = [
         'http://delfino.cr/opinion/'
     ]
