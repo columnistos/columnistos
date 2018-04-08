@@ -30,12 +30,12 @@ SQLITE_URL = 'sqlite:///diarios/diarios.sqlite'
 HOURS_WAIT_DM = 12
 TIMEZONE = 'America/Costa Rica'
 COMPLETE_NAMES = {
-    'nacion': 'La Nación'
+    'nacion': 'La Nación',
+    'delfino': 'DelfinoCR'
     # 'crhoy': 'CRHoy',
     # 'extra': 'La Extra',
     # 'prensalibre': 'La Prensa Libre',
     # 'mundocr': 'MundoCR',
-    # 'delfino': 'DelfinoCR'
 }
 MIN_NEW_ARTICLES = 2
 MIN_PERCENT_SOME = 45
