@@ -34,7 +34,9 @@ COMPLETE_NAMES = {
     'perfil': 'Perfil',
     'abc': 'ABC Color',
     'lanacionpy': 'La Nación',
-    'ultimahora': 'Última Hora'
+    'ultimahora': 'Última Hora',
+    'elmercurio': 'El Mercurio',
+    'latercera': 'La Tercera',
 }
 MIN_NEW_ARTICLES = 2
 MIN_PERCENT_SOME = 45
