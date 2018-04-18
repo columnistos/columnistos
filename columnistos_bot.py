@@ -37,6 +37,7 @@ COMPLETE_NAMES = {
     'ultimahora': 'Última Hora',
     'elmercurio': 'El Mercurio',
     'latercera': 'La Tercera',
+    't13': 'T13',
 }
 MIN_NEW_ARTICLES = 2
 MIN_PERCENT_SOME = 45
