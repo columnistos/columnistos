@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 import argparse
-import datetime
+import datetime as dt
 import json
 import logging
 import os
@@ -111,16 +111,17 @@ ALL_WOMAN_DAYS = [
 
 DAILY_REPORT = [
     'Porcentaje de columnas de opinión publicadas en la página principal ' +
-    '{escritas} por mujeres en el día de ayer:',
+    '{escritas} por mujeres en el día de ayer ({fecha}):',
 
-    'Ayer en las páginas principales el porcentaje de columnistas de ' +
-    'opinión mujeres fue:',
+    'Ayer ({fecha}) en las páginas principales el porcentaje de columnistas ' +
+    'de opinión mujeres fue:',
 
-    'De las columnas de opinión publicadas ayer en las páginas principales, ' +
-    'estas son en porcentaje, las que fueron {escritas} por mujeres:',
+    'De las columnas de opinión publicadas ayer ({fecha}) en las páginas ' +
+    'principales, estas son en porcentaje, las que fueron {escritas} por ' +
+    'mujeres:',
 
-    'De las columnas de opinión publicadas ayer en las páginas principales, ' +
-    'estas son en porcentaje, las {escritas} por mujeres:'
+    'De las columnas de opinión publicadas ayer ({fecha}) en las páginas ' +
+    'principales, estas son en porcentaje, las {escritas} por mujeres:'
 ]
 
 
@@ -168,7 +169,8 @@ def select_text(stats):
 def daily_tweet(daily_stats):
     text = random.choice(DAILY_REPORT)
     escritas = random.choice(['escritas', 'firmadas'])
-    text = text.format(escritas=escritas)
+    fecha = dt.datetime.strftime(daily_stats[0]['yesterday'], '%-d/%-m')
+    text = text.format(escritas=escritas, fecha=fecha)
 
     for row in daily_stats:
         text += '\n {medio}: {percent} % ({fem} de {total})'.format(
@@ -312,7 +314,7 @@ def send_dms(api, texts_to_dm):
                 api.send_direct_message(screen_name=admin_screen_name, text=dm)
                 # add/update in table of sent DMs
                 dms.upsert(dict(author_id=text['id'],
-                                added=datetime.datetime.utcnow()),
+                                added=dt.datetime.utcnow()),
                            ['author_id'])
         except TweepError:
             logging.warning('Sending DM to {} failed'.format(
@@ -332,7 +334,7 @@ def get_author_no_gender():
         authors_no_gender.append(author)
 
     # remove from dms authors with no answer
-    past_date = datetime.datetime.utcnow() - datetime.timedelta(
+    past_date = dt.datetime.utcnow() - dt.timedelta(
         hours=HOURS_WAIT_DM)
     if 'dms' in db.tables and 'added' in db['dms'].columns and \
        len(db['dms']) > 0:
@@ -354,13 +356,13 @@ def get_stats(site):
     articles = db['articles']
     authors = db['authors']
 
-    today = datetime.datetime.now(timezone(TIMEZONE)).date()
-    today_with_time = datetime.datetime(
+    today = dt.datetime.now(timezone(TIMEZONE)).date()
+    today_with_time = dt.datetime(
         year=today.year,
         month=today.month,
         day=today.day
     )
-    yesterday = today_with_time - datetime.timedelta(days=1)
+    yesterday = today_with_time - dt.timedelta(days=1)
 
     filtered_articles = articles.find(
         articles.table.columns.last_seen > yesterday,
@@ -410,7 +412,7 @@ def get_stats(site):
         # otra columna/s para llevar la cuenta de días seguidos sin notas de
         # un genero
         if row:
-            last_seen = datetime.datetime.strptime(
+            last_seen = dt.datetime.strptime(
                 ''.join(row['last_seen'].rsplit(':', 1)),
                 '%Y-%m-%dT%H:%M:%S%z')
             last_seen = last_seen.replace(tzinfo=None)
@@ -418,7 +420,8 @@ def get_stats(site):
     else:
         days = yesterday - yesterday
     return dict(total=total, fem=fem, var=total-fem, days=days.days,
-                last_id=last_id, medio=COMPLETE_NAMES[site['name']])
+                last_id=last_id, medio=COMPLETE_NAMES[site['name']],
+                yesterday=yesterday)
 
 
 def parse_arguments():
