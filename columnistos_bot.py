@@ -172,6 +172,8 @@ def daily_tweet(daily_stats):
     fecha = dt.datetime.strftime(daily_stats[0]['yesterday'], '%-d/%-m')
     text = text.format(escritas=escritas, fecha=fecha)
 
+    f_count = 0
+    t_count = 0
     for row in daily_stats:
         text += '\n {medio}: {percent} % ({fem} de {total})'.format(
             medio=row['medio'],
@@ -179,6 +181,11 @@ def daily_tweet(daily_stats):
             fem=row['fem'],
             total=row['total']
         )
+        f_count += row['fem']
+        t_count += row['total']
+    if len(daily_stats) > 1:
+        percent_t = round(f_count / t_count * 100)
+        text += f'\n ———\n Total: {percent_t} % ({f_count}) de {t_count})'
     return text
 
 
