@@ -10,6 +10,8 @@ PRs bienvenidos.
 
 Chile: [@columnistas_cl](https://twitter.com/columnistas_cl).
 
+Colombia: [@LeTengo_elDato](https://twitter.com/LeTengo_elDato).
+
 Costa Rica: [@columnistosCR](https://twitter.com/columnistoscr).
 
 Paraguay: [@TEDICpy](https://twitter.com/TEDICpy).
