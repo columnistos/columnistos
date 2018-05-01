@@ -4,7 +4,6 @@ from scrapy.loader import ItemLoader
 
 from diarios.items import DiariosItem
 
-
 class LanacionpySpider(scrapy.Spider):
     name = 'lanacionpy'
     allowed_domains = ['www.lanacion.com.py']
@@ -25,8 +24,6 @@ class LanacionpySpider(scrapy.Spider):
             link = response.urljoin(selector.xpath('.//@href').extract_first())
             if link is not None:
                 yield scrapy.Request(link, callback=self.parse_article)
-        
-
     
     def parse_article(self, response):
         import re
