@@ -4,7 +4,6 @@ from scrapy.loader import ItemLoader
 
 from diarios.items import DiariosItem
 
-
 class LanacionpySpider(scrapy.Spider):
     name = 'lanacionpy'
     allowed_domains = ['www.lanacion.com.py']
@@ -25,16 +24,21 @@ class LanacionpySpider(scrapy.Spider):
             link = response.urljoin(selector.xpath('.//@href').extract_first())
             if link is not None:
                 yield scrapy.Request(link, callback=self.parse_article)
-        
-
     
     def parse_article(self, response):
         import re
         selector = response.xpath('//*[@id="article-content"]')
         loader = ItemLoader(DiariosItem(), selector=selector)
-        #capitalizar el titulo y quitar los 4 primeros caracteres que es el "Por "
-        autor = response.xpath('//strong//text()').extract_first().title()[4:]
-        #autor = re.sub('[\.(*)]', '', autor)
+        # guardo todo el array en aux
+        aux = response.xpath('//strong//text()').extract()
+	# recorro buscando la palabra por, que parece ser lo unico constante
+        for x in aux:
+            # transformo a Primera Mayuscula
+            x = x.title()
+            if x[:4] == "Por ":
+                #como el por y guardo el resto y borro espacios
+                autor = x.title()[4:].strip()
+        # limpio tildes
         autor = re.sub('[^a-zA-ZñÑáéíóúÁÉÍÓÚ ]', '', autor)
         loader.add_value('author', autor)
         loader.add_value('title', response.xpath('//*[@class="headline huge normal-style "]/a/text()').extract_first())
