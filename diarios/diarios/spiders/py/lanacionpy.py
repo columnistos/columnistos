@@ -32,6 +32,7 @@ class LanacionpySpider(scrapy.Spider):
         # guardo todo el array en aux
         aux = response.xpath('//strong//text()').extract()
 	# recorro buscando la palabra por, que parece ser lo unico constante
+        autor = 'Error-al-recuperar'
         for x in aux:
             # transformo a Primera Mayuscula
             x = x.title()
