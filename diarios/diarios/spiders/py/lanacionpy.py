@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 import scrapy
+import logging
 from scrapy.loader import ItemLoader
-
 from diarios.items import DiariosItem
+
+logging.basicConfig(level=logging.DEBUG)
 
 class LanacionpySpider(scrapy.Spider):
     name = 'lanacionpy'
@@ -32,13 +34,18 @@ class LanacionpySpider(scrapy.Spider):
         # guardo todo el array en aux
         aux = response.xpath('//strong//text()').extract()
 	# recorro buscando la palabra por, que parece ser lo unico constante
-        autor = 'Error-al-recuperar'
+        autor = 'Erroralrecuperar'
         for x in aux:
             # transformo a Primera Mayuscula
             x = x.title()
             if x[:4] == "Por ":
                 #como el por y guardo el resto y borro espacios
-                autor = x.title()[4:].strip()
+                autor = x[4:].strip()
+                logging.debug("--------")
+                logging.debug(x)
+                logging.debug("--------")
+        logging.debug('Lo que guarda:')
+        logging.debug(autor)
         # limpio tildes
         autor = re.sub('[^a-zA-ZñÑáéíóúÁÉÍÓÚ ]', '', autor)
         loader.add_value('author', autor)
