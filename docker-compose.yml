@@ -7,6 +7,8 @@ services:
       dockerfile: Dockerfile
     #restart: unless-stopped
     env_file: docker.env
+    security_opt:
+      - no-new-privileges:true
     volumes:
       - app:/usr/src/app
       - /etc/localtime:/etc/localtime:ro
