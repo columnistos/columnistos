@@ -28,10 +28,9 @@ class UltimahoraSpider(scrapy.Spider):
         import re
         loader = ItemLoader(DiariosItem(), selector=selector)
         autor = selector.xpath('.//span//a//text()').extract_first().title()
-        #autor = re.sub('[\.(*)]', '', autor)
         autor = re.sub('[^a-zA-ZñÑáéíóúÁÉÍÓÚ ]', '', autor)
-        #loader.add_xpath('author', './/span//a//text()')
+        autor = autor.strip()
         loader.add_value('author', autor)
-        loader.add_xpath('title', './/h3//a//text()')
+        loader.add_xpath('title', './/h3//a//text()'.strip())
         loader.add_xpath('url', './/h3//@href')
         return loader.load_item()

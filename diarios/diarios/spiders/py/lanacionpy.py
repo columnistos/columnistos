@@ -49,6 +49,6 @@ class LanacionpySpider(scrapy.Spider):
         # limpio tildes
         autor = re.sub('[^a-zA-ZñÑáéíóúÁÉÍÓÚ ]', '', autor)
         loader.add_value('author', autor)
-        loader.add_value('title', response.xpath('//*[@class="headline huge normal-style "]/a/text()').extract_first())
+        loader.add_value('title', response.xpath('//*[@class="headline huge normal-style "]/a/text()').extract_first().strip())
         loader.add_value('url', response.request.url)
         return loader.load_item()

@@ -29,10 +29,9 @@ class AbcSpider(scrapy.Spider):
         loader = ItemLoader(DiariosItem(), selector=selector)
         #
         autor = selector.xpath('.//h3//text()').extract_first().title()
-        #autor = re.sub('[\.(*)]', '', autor)
         autor = re.sub('[^a-zA-ZñÑáéíóúÁÉÍÓÚ ]', '', autor)
+        autor = autor.strip()
         loader.add_value('author', autor)
-        #loader.add_xpath('author', './/h3//text()')
-        loader.add_xpath('title', './/h2//a//text()')
+        loader.add_xpath('title', './/h2//a//text()'.strip())
         loader.add_xpath('url', './/h2//@href')
         return loader.load_item()
