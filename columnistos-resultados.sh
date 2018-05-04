@@ -32,6 +32,7 @@ if [ "$subir" = "s" ]; then
   # Copio y limpio
   echo -e "Subiendo..."
   mv $carpetascript/$(date +%Y%m%d_%H)_articulos.csv $carpeta
+  docker cp columnistosdocker_app_1:/usr/src/app/diarios/diarios.sqlite $carpeta/$(date +%Y%m%d_%H)_diarios.sqlite
   sleep 1
 
   #Desmonto carpeta
