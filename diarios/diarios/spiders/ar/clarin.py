@@ -40,7 +40,7 @@ class ClarinSpider(scrapy.Spider):
 
         # opinión agrupado
         selectors = sel.xpath(
-            '//*[@id="columnas"]//div[@class="mt"]')
+            '//*[@id="columnas"]//div[@class="mt "]')
         for selector in selectors:
             yield self.parse_article_grouped(selector, response)
 
