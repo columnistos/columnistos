@@ -38,6 +38,10 @@ COMPLETE_NAMES = {
     'elmercurio': 'El Mercurio',
     'latercera': 'La Tercera',
     't13': 'T13',
+    'cooperativa': "Cooperativa",
+    'eldinamo': "El Dínamo",
+    'elmostrador': "El Mostrador",
+    'theclinic': "The Clinic",
 }
 MIN_NEW_ARTICLES = 2
 MIN_PERCENT_SOME = 45
