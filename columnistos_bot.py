@@ -474,6 +474,13 @@ def main():
         logging.info('Checking if ready to tweet')
         if 'sites' not in db.tables:
             sites = db.create_table('sites')
+        else:
+            sites = db['sites']
+
+        sites_in_articles = db['articles'].distinct('site')
+        for row in sites_in_articles:
+            previous_site = sites.find_one(name=row['site'])
+            if previous_site is None:
                 sites.insert(dict(name=row['site'], last_checked_id=0))
 
         daily_stats = list()
