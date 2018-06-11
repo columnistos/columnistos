@@ -419,6 +419,8 @@ def get_stats(site):
                 '%Y-%m-%dT%H:%M:%S%z')
             last_seen = last_seen.replace(tzinfo=None)
             days = yesterday - last_seen
+        else:
+            days = None
     else:
         days = yesterday - yesterday
     return dict(total=total, fem=fem, var=total-fem, days=days.days,
