@@ -420,7 +420,7 @@ def get_stats(site):
             last_seen = last_seen.replace(tzinfo=None)
             days = yesterday - last_seen
         else:
-            days = None
+            days = yesterday - yesterday
     else:
         days = yesterday - yesterday
     return dict(total=total, fem=fem, var=total-fem, days=days.days,
