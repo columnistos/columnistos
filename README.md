@@ -1,10 +1,20 @@
 # Intro
 
-Columnistos fue concebido por [@rusosnith](https://twitter.com/rusosnith) y programado por [@j_e_d](https://twitter.com/j_e_d). La versión original está en (https://github.com/j-e-d/columnistos). 
+Código de [@columnistOS]. Idea de [@rusosnith](https://twitter.com/rusosnith), programado originalmente por [@j_e_d](https://twitter.com/j_e_d).
 
-[TEDIC](https://www.tedic.org) hizo una adaptación para Paraguay y trata de colaborar con mejoras al proyecto original. Los resultados saldrán diariamente por el usuario [twitter de TEDIC](https://twitter.com/TEDICpy). 
+Autores en [COLLABORATORS.md].
 
-Otro de nuestros aportes fue la adaptación y uso a través de Docker **(Ver más abajo)**. 
+PRs bienvenidos.
+
+## Bots Hermanas:
+
+Chile: [@columnistas_cl](https://twitter.com/columnistas_cl).
+
+Colombia: [@LeTengo_elDato](https://twitter.com/LeTengo_elDato).
+
+Costa Rica: [@columnistosCR](https://twitter.com/columnistoscr).
+
+Paraguay: [@TEDICpy](https://twitter.com/TEDICpy).
 
 # Instalación
 
@@ -75,7 +85,7 @@ En la base se va a crear una table `articles` para los artículos y otra `author
 
 # Twitter
 
-Para lo que sigue se necesitas una cuenta de Twitter para el bot con permisos para usar la API de Twitter, usando una cuenta distinta a la personal ir a [apps.twitter.com](https://apps.twitter.com/), necesitan los datos para completar en los siguientes `.sh` las variables:
+Para lo que sigue se necesitas crear una nueva cuenta de Twitter desde la cuál van a mandar los mensajes y crear una app para que esa cuenta tenga permisos para usar la API de Twitter. Usando la nueva cuenta ir a [apps.twitter.com](https://apps.twitter.com/), necesitan los datos para completar en los siguientes `.sh` las variables:
 
 ```
 export TWITTER_CONSUMER_KEY=""
@@ -83,13 +93,15 @@ export TWITTER_CONSUMER_SECRET=""
 export TWITTER_ACCESS_TOKEN=""
 export TWITTER_ACCESS_TOKEN_SECRET=""
 
+```
+
 ## Mandar y chequear DMs
 
 Esto es para los casos en que no se puede determinar el genero de autores, se pide ayuda a una o varias personas.
 
 Cada vez que corre revisa si hay autores con genero indeterminado, si hay manda un DM a la cuenta que se indique en el código con la consulta del genero. Cada vez que corre también se fija si recibió alguna respuesta y en caso de que suceda intenta procesarla.
 
-Si se envia a más de una persona y las respuestas no coinciden el bot les informa que eso sucedió para que se pongan de acuerdo y definan.
+Si se envia a más de una persona y las respuestas no coinciden la cuenta bot les informa que eso sucedió para que se pongan de acuerdo y definan.
 
 ```
 runbotdm.sh
@@ -133,3 +145,4 @@ docker-compose run app python columnistos_bot.py -tweet
 Si se desea comenzar con base nueva, borrar diarios/diarios.sqlite y volver al punto 2
 
 [@columnistos]: https://twitter.com/columnistos
+[COLLABORATORS.md]: COLLABORATORS.md
