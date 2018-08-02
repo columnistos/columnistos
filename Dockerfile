@@ -1,4 +1,4 @@
-FROM python:3
+FROM python:3.6
 MAINTAINER Lu Pa <admin@tedic.org>
 
 ENV DEBIAN_FRONTEND noninteractive
