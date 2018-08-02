@@ -9,6 +9,8 @@ else
   echo -e "»»»»»»»»»»»»»»»»»»»»»»»"
   echo -e "»» Se inicializa base »"
   echo -e "»»»»»»»»»»»»»»»»»»»»»»»"
+  # Cargo conenido de diarios
+  mv diariosAux/* diarios/
   cd diarios && scrapy crawl nombres
 fi
 

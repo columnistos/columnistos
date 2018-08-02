@@ -10,7 +10,7 @@ services:
     security_opt:
       - no-new-privileges:true
     volumes:
-      - app:/usr/src/app
+      - diarios:/usr/src/app/diarios
       - /etc/localtime:/etc/localtime:ro
 volumes:
-  app:
+  diarios:

@@ -32,7 +32,10 @@ class LanacionpySpider(scrapy.Spider):
         selector = response.xpath('//*[@id="article-content"]')
         loader = ItemLoader(DiariosItem(), selector=selector)
         # guardo todo el array en aux
-        aux = response.xpath('//strong//text()').extract()
+        aux = response.xpath('.//strong//text()').extract()
+        logging.debug("----    AUX    ----")
+        logging.debug(aux)
+        logging.debug("----    AUX    ----")
 	# recorro buscando la palabra por, que parece ser lo unico constante
         autor = 'Erroralrecuperar'
         for x in aux:
