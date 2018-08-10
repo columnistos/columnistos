@@ -22,7 +22,7 @@ LOG_FOLDER = os.environ.get('LOG_FOLDER', '')
 AUTHORIZED_SCREEN_NAMES = [
     'admin_screen_name',  # Twitter user name of persons that can send DMs
     'another_admin_screen_name',  # and that will receive DM from the bot
-    # use 'screen_name' NOT '@screen_name'	
+    # use 'screen_name' NOT '@screen_name'
 ]
 SQLITE_URL = 'sqlite:///diarios/diarios.sqlite'
 HOURS_WAIT_DM = 12

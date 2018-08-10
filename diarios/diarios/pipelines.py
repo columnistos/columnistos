@@ -10,6 +10,7 @@ import dataset
 
 from pytz import timezone
 
+
 class StorePipeline(object):
     def __init__(self, sqlite_url, authors_table, articles_table, names_table,
                  my_timezone):
