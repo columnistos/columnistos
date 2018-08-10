@@ -22,7 +22,6 @@ class CRHoySpider(scrapy.Spider):
         """
 
         jsonresponse = json.loads(response.body_as_unicode())['noticiasCategoria']
-        print(json.dumps(jsonresponse))
         for article in jsonresponse:
             yield self.parse_article(article)
 
