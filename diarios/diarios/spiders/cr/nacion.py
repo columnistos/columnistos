@@ -28,10 +28,6 @@ class NacionSpider(scrapy.Spider):
 
         loader = ItemLoader(item=DiariosItem(), selector=selector)
 
-        # autor = selector.xpath('./article//figure/div[@class="byline"]/span[@class="autor"]/a/text()')
-        # autor = re.sub('[^a-zA-ZñÑáéíóúÁÉÍÓÚ ]', '', autor)
-        # loader.add_value('author', autor)
-
         titulo = selector.xpath('./article//figure/a/h4/text()').extract_first()
         titulo = re.sub('[^a-zA-ZñÑáéíóúÁÉÍÓÚ ]', '', titulo)
         loader.add_value('title', titulo)
@@ -39,7 +35,6 @@ class NacionSpider(scrapy.Spider):
         autor = selector.xpath('./article//figure//div[@class="byline"]/span[@class="author"]//text()').extract_first()
         autor = re.sub('[^a-zA-ZñÑáéíóúÁÉÍÓÚ ]', '', autor)
         loader.add_value('author', autor)
-        #loader.add_xpath('author', './/article//figure//div[@class="byline"]//span[@class="author"]/a/text()')
 
         loader.add_xpath('url', './article//figure/a/@href')
 
