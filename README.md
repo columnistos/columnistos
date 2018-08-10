@@ -1,12 +1,20 @@
 # Intro
 
-Código de [@columnistos]. Idea de [@rusosnith](https://twitter.com/rusosnith), programado originalmente por [@j_e_d](https://twitter.com/j_e_d).
-
-En la cuenta [@TEDICpy](https://twitter.com/TEDICpy) tuitean los números de los diarios Paraguayos.
+Código de [@columnistOS]. Idea de [@rusosnith](https://twitter.com/rusosnith), programado originalmente por [@j_e_d](https://twitter.com/j_e_d).
 
 Autores en [COLLABORATORS.md].
 
 PRs bienvenidos.
+
+## Bots Hermanas:
+
+Chile: [@columnistas_cl](https://twitter.com/columnistas_cl).
+
+Colombia: [@LeTengo_elDato](https://twitter.com/LeTengo_elDato).
+
+Costa Rica: [@columnistosCR](https://twitter.com/columnistoscr).
+
+Paraguay: [@TEDICpy](https://twitter.com/TEDICpy).
 
 # Instalación
 

@@ -25,6 +25,6 @@ class LaterceraSpider(scrapy.Spider):
         loader = ItemLoader(DiariosItem(), selector=selector)
 
         loader.add_xpath('author', './/p//small[2]//a//text()')
-        loader.add_xpath('title', './/h4//text()')
+        loader.add_xpath('title', './/h4//text()[normalize-space()]')
         loader.add_xpath('url', './/h4//@href')
         return loader.load_item()
