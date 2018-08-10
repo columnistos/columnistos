@@ -10,11 +10,6 @@ import dataset
 
 from pytz import timezone
 
-import json
-import codecs
-
-PRINT_JSON = False
-
 class StorePipeline(object):
     def __init__(self, sqlite_url, authors_table, articles_table, names_table,
                  my_timezone):
@@ -24,7 +19,6 @@ class StorePipeline(object):
         self.names_table = names_table
         self.dt = datetime.now(timezone(my_timezone)).replace(
             microsecond=0).isoformat()
-        
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -38,12 +32,6 @@ class StorePipeline(object):
 
     def open_spider(self, spider):
         self.db = dataset.connect(self.sqlite_url)
-        if PRINT_JSON == True:
-            self.file = codecs.open('items.jl', 'w', 'utf-8')
-    
-    def close_spider(self, spider):
-        if PRINT_JSON == True:
-            self.file.close()
 
     def get_gender(self, author):
         name_table = self.db[self.names_table]
@@ -55,6 +43,8 @@ class StorePipeline(object):
         for x, y in transform_tuples:
             if x in name_no_accents:
                 name_no_accents = name_no_accents.replace(x, y)
+
+
 
         if name_table.count(name=name) == 0 and name_table.count(
                 name=name_no_accents) == 0:
@@ -68,12 +58,6 @@ class StorePipeline(object):
         """
         Store data to DB
         """
-
-        #saves to json
-        if PRINT_JSON == True:
-            line = json.dumps(dict(item), ensure_ascii=False) + "\n"
-            self.file.write(line)
-
         # stores author if new
         author_table = self.db[self.authors_table]
 
