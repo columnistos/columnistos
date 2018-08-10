@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# -*- coding: utf-8 -*-
 import argparse
 import datetime
 import json
@@ -31,14 +32,14 @@ HOURS_WAIT_DM = 12
 TIMEZONE = 'America/Costa_Rica'
 COMPLETE_NAMES = {
     'nacion': 'La Nación',
-    'delfino': 'DelfinoCR'
-    # 'crhoy': 'CRHoy',
+    'delfino': 'DelfinoCR',
+    'crhoy': 'CRHoy'
     # 'extra': 'La Extra',
     # 'prensalibre': 'La Prensa Libre',
     # 'mundocr': 'MundoCR',
 }
 MIN_NEW_ARTICLES = 2
-MIN_PERCENT_SOME = 45
+MIN_PERCENT_SOME = 10
 
 
 NO_WOMAN = [
