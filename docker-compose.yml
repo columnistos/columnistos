@@ -10,7 +10,5 @@ services:
     security_opt:
       - no-new-privileges:true
     volumes:
-      - diarios:/usr/src/app/diarios
+      - ./diarios:/usr/src/app/diarios
       - /etc/localtime:/etc/localtime:ro
-volumes:
-  diarios:
