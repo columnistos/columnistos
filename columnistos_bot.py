@@ -33,13 +33,13 @@ TIMEZONE = 'America/Costa_Rica'
 COMPLETE_NAMES = {
     'nacion': 'La Nación',
     'delfino': 'DelfinoCR',
-    'crhoy': 'CRHoy'
+    'crhoy': 'CRHoy',
     # 'extra': 'La Extra',
     # 'prensalibre': 'La Prensa Libre',
     # 'mundocr': 'MundoCR',
 }
 MIN_NEW_ARTICLES = 2
-MIN_PERCENT_SOME = 10
+MIN_PERCENT_SOME = 45
 
 
 NO_WOMAN = [
@@ -194,12 +194,12 @@ def test_twitter(api):
 
 def tweet_text(api, text_to_tweet):
     if TESTING:
-        print(text_to_tweet)
+        print (text_to_tweet)
         return True
     try:
         api.update_status(status=text_to_tweet)
     except:
-        print(sys.exc_info()[0])
+        print (sys.exc_info()[0])
         return False
     return True
 
@@ -255,10 +255,10 @@ def check_dms(api):
                                         gender=response[1][0]),
                                    ['id'])
                     api.send_direct_message(
-                        user_id=dm.sender.id,
-                        text="Los datos de {} ({}) se cambiaron".format(
-                            author['author'], author['id'])
-                    )
+                            user_id=dm.sender.id,
+                            text="Los datos de {} ({}) se cambiaron".format(
+                                author['author'], author['id'])
+                        )
                     logging.info('Gender of {} set to {}'.format(
                         author['author'], response[1][0]))
                 elif author['gender'] == response[1][0]:
@@ -283,10 +283,10 @@ def check_dms(api):
                                ['id'])
                 dms.delete(author_id=response[0])
                 api.send_direct_message(
-                    user_id=dm.sender.id,
-                    text="Gracias por los datos de {} ({})".format(
-                        author['author'], author['id'])
-                )
+                        user_id=dm.sender.id,
+                        text="Gracias por los datos de {} ({})".format(
+                            author['author'], author['id'])
+                    )
                 logging.info('Gender of {} set to {}'.format(
                     author['author'], response[1][0]))
     with open('last_checked_dm.json', 'w') as lt:
