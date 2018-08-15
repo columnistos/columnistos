@@ -28,16 +28,12 @@ class UltimahoraSpider(scrapy.Spider):
         import re
         loader = ItemLoader(DiariosItem(), selector=selector)
         #Extraigo autor y convierto en mayus y borro espacios
-        autor = selector.xpath('//div[@class="person-name"]//text()').extract()
+        autor = selector.xpath('//div[@class="person-name"]//text()').extract_first().title().strip()
         # Saco símbolos raros
         autor = re.sub('[^a-zA-ZñÑáéíóúÁÉÍÓÚ ]', '', autor)
         # Trae "Por" al principio así que lo saco
-        for x in autor:
-            # Lo paso todo primera mayus y saco espacios
-            x = x.title().strip()
-            # Recorro y saco "Por"
-            if x[:4] == "Por ":
-                autor = autor[4:].strip()
+        if autor[:4] == "Por ":
+            autor = autor[4:]
         # Guardo autor
         loader.add_value('author', autor)
         # Guardo título
