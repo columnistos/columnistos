@@ -20,7 +20,7 @@ class UltimahoraSpider(scrapy.Spider):
         @returns requests 0 0
         @scrapes author title url
         """
-        selectors = response.xpath('//div[@class="persons"]')
+        selectors = response.xpath('//div[@class="persons"]/div/div')
         for selector in selectors:
             yield self.parse_article(selector, response)
 
