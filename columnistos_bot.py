@@ -32,8 +32,8 @@ HOURS_WAIT_DM = 12
 TIMEZONE = 'America/Costa_Rica'
 COMPLETE_NAMES = {
     'nacion': 'La Nación',
-    'delfino': 'DelfinoCR',
     'crhoy': 'CRHoy',
+    'delfino': 'DelfinoCR',
     # 'extra': 'La Extra',
     # 'prensalibre': 'La Prensa Libre',
     # 'mundocr': 'MundoCR',
