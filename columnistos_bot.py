@@ -34,6 +34,7 @@ COMPLETE_NAMES = {
     'nacion': 'La Nación',
     'crhoy': 'CRHoy',
     'delfino': 'DelfinoCR',
+    'larepublica': 'La República',
     # 'extra': 'La Extra',
     # 'prensalibre': 'La Prensa Libre',
     # 'mundocr': 'MundoCR',
