@@ -6,3 +6,4 @@ cd diarios
 scrapy crawl nacion
 scrapy crawl crhoy
 scrapy crawl delfino
+scrapy crawl larepublica
