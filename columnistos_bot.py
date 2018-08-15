@@ -40,6 +40,8 @@ COMPLETE_NAMES = {
     't13': 'T13',
     'nacion': 'La Nación',
     'crhoy': 'CRHoy',
+    'delfino': 'DelfinoCR',
+    'larepublica': 'La República',
 }
 MIN_NEW_ARTICLES = 2
 MIN_PERCENT_SOME = 45
