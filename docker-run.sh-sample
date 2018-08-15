@@ -15,8 +15,16 @@ else
   cd $carpeta/diarios && scrapy crawl nombres
 fi
 
-# Ahora sí corro los crawlers. Comente y descomente a gusto
-cd $carpeta && ./runcrawlers.sh
-#cd $carpeta && ./runcrawlers_chile.sh
-#cd $carpeta && ./runcrawlers_cr.sh
-#cd $carpeta && ./runcrawlers_paraguay.sh
+# Agregar aquí los diarios que desea escrapear
+lista='lanacionpy abc ultimahora'
+
+cd $carpeta/diarios
+
+# Recorro la lista
+for diario in $lista
+do
+  echo "Corriendo $diario"
+  #LOG_LEVEL puede ser: CRITICAL, ERROR, WARNING, INFO, DEBUG
+  scrapy crawl $diario -s LOG_LEVEL='ERROR' -s LOG_FILE=log_$diario.log
+done
+
