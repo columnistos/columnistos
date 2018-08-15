@@ -1,4 +1,7 @@
 #!/bin/bash
+
+# Agregar aquí los diarios que desea escrapear
+lista='lanacionpy abc ultimahora'
 carpeta=/usr/src/app
 
 # Verifico que exista la base sino la creo 
@@ -15,15 +18,10 @@ else
   cd $carpeta/diarios && scrapy crawl nombres
 fi
 
-# Agregar aquí los diarios que desea escrapear
-lista='lanacionpy abc ultimahora'
-
+# Recorro la lista y ejecuto
 cd $carpeta/diarios
-
-# Recorro la lista
 for diario in $lista
 do
-  echo "Corriendo $diario"
   #LOG_LEVEL puede ser: CRITICAL, ERROR, WARNING, INFO, DEBUG
   scrapy crawl $diario -s LOG_LEVEL='ERROR' -s LOG_FILE=log_$diario.log
 done
