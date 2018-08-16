@@ -15,7 +15,6 @@ mkdir -p $carpeta
 
 # Obtengo resultados
 echo -e "Sacando resultados"
-echo -e "docker-compose -f $carpetascript\/docker-compose.yml run \-\-rm app sqlite3 -header -csv \/usr\/src\/app\/diarios\/diarios.sqlite \"select * from articles a join authors aut where a.author_id = aut.id;\" \> $carpeta/$pais_articulos.csv"
 docker-compose -f $carpetascript/docker-compose.yml run --rm app sqlite3 \
 	-header -csv /usr/src/app/diarios/diarios.sqlite \
 	"select * from articles a join authors aut where a.author_id = aut.id;" > \
