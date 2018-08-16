@@ -12,3 +12,9 @@ services:
     volumes:
       - ./diarios:/usr/src/app/diarios
       - /etc/localtime:/etc/localtime:ro
+  web:
+    image: httpd:alpine
+    ports:
+      - "8095:80"
+    volumes:
+      - ./public:/usr/local/apache2/htdocs/
