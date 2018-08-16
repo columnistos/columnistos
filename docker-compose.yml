@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
   app:
@@ -14,7 +14,15 @@ services:
       - /etc/localtime:/etc/localtime:ro
   web:
     image: httpd:alpine
+    restart: unless-stopped
     ports:
       - "8095:80"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 5m
+      timeout: 10s
+      retries: 3
+    security_opt:
+      - no-new-privileges:true
     volumes:
       - ./public:/usr/local/apache2/htdocs/
