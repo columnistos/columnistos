@@ -1,6 +1,6 @@
 # Local database
 # No queremos que se haga commit de la base 
-pub/
+public/
 diarios.sqlite
 *.env
 *.csv
