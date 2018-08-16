@@ -22,7 +22,7 @@ echo -e "------------------------------------------------"
 if [ "$subir" = "s" ]; then
 
   # Creo carpeta para montar davfs
-  mkdir $carpeta || exit
+  mkdir -p $carpeta || exit
 
   # Monto carpeta remota
   echo -e "Montando carpeta remota"
@@ -41,6 +41,7 @@ if [ "$subir" = "s" ]; then
 
   #Limpiamos carpeta
   sleep 1
+  # FIXME: verificar si existe y sacar mensaje
   rmdir $carpeta
 else
   echo -e "\nNo se copia remotamente, el archivo está en:"
