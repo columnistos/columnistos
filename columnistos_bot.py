@@ -262,7 +262,7 @@ def check_dms(api, auth_ids):
                 'DM from unauthorized account with id {}'.format(
                     dm['message_create']['sender_id']))
         elif int(dm['id']) <= data['last_dm']:
-            break
+            continue
         else:
             data['last_dm'] = int(dm['id'])
             response = dm['message_create']['message_data'][
