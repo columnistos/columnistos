@@ -26,6 +26,12 @@ class ClarinSpider(scrapy.Spider):
         for selector in selectors:
             yield self.parse_article_body(selector, response)
 
+        selectors = response.xpath(
+            '//*[@id="columnas"]//div[@class="mt"]')
+        for selector in selectors:
+            yield self.parse_article_grouped(selector, response)
+
+
         # links to jsons
         on_demand = response.xpath(
             '//*[@class="on-demand"]//@data-src')
@@ -40,7 +46,7 @@ class ClarinSpider(scrapy.Spider):
 
         # opinión agrupado
         selectors = sel.xpath(
-            '//*[@id="columnas"]//div[@class="mt "]')
+            '//*[@id="columnas"]//div[@class="mt"]')
         for selector in selectors:
             yield self.parse_article_grouped(selector, response)
 
