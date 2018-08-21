@@ -32,7 +32,7 @@ class LanacionpySpider(scrapy.Spider):
         selector = response.xpath('//*[@id="article-content"]')
         loader = ItemLoader(DiariosItem(), selector=selector)
         #Extraigo autor y convierto en mayus y borro espacios
-        autor = response.xpath('.//b//text()').extract_first().title().strip()
+        autor = response.xpath('.//span[@class="author-name"]//text()').extract_first().title().strip()
         # Saco símbolos raros
         autor = re.sub('[^a-zA-ZñÑáéíóúÁÉÍÓÚ ]', '', autor)
         # Trae "Por" al principio así que lo saco
