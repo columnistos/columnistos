@@ -42,7 +42,7 @@ COMPLETE_NAMES = {
     'delfino': 'DelfinoCR',
     'larepublica': 'La República',
 }
-MIN_NEW_ARTICLES = 2
+MIN_NEW_ARTICLES = 1
 MIN_PERCENT_SOME = 45
 
 
