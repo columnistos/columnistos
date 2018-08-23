@@ -19,9 +19,9 @@ TESTING = os.environ.get('TESTING', 'True') == 'True'
 LOG_FOLDER = os.environ.get('LOG_FOLDER', '')
 
 AUTHORIZED_SCREEN_NAMES = [
-    'lupa18',  # Twitter user name of persons that can send DMs
-    'marsebu',  # and that will receive DM from the bot
-    'eduecarrillo',
+    'admin_screen_name',  # Twitter user name of persons that can send DMs
+    'another_admin_screen_name',  # and that will receive DM from the bot
+    # use 'screen_name' NOT '@screen_name'
 ]
 SQLITE_URL = 'sqlite:///diarios/diarios.sqlite'
 HOURS_WAIT_DM = 12
@@ -42,7 +42,7 @@ COMPLETE_NAMES = {
     'delfino': 'DelfinoCR',
     'larepublica': 'La República',
 }
-MIN_NEW_ARTICLES = 1
+MIN_NEW_ARTICLES = 2
 MIN_PERCENT_SOME = 45
 
 
