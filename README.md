@@ -126,23 +126,64 @@ Para que todo funcione automaticamente hay que agregar los `.sh` a algún cronjo
 ```
 # Instalación y uso con Docker
 
-**1.** Copiar el archivo **docker.env-sample** a **docker.env** y agregar los valores deseados. También copiar **docker-run.sh-sample** a **docker-run.sh** y cambiar los valores de los crawls según el país. 
+## Instalar y correr el bot
 
-**2.** Correr la instalación (si es que no hay base) y el crawler:
+**1.** Copiar el archivo **docker.env-sample** a **docker.env** y agregar los valores deseados, es decir, las claves de la API de twitter y un par de parámetros más.
+
+También copiar **docker-run.sh-sample** a **docker-run.sh** y cambiar los valores de los diarios a escrapear. 
+
+**2.** Levantar el contenedeor (la primer vez va a demorar pues instala todas las dependencias y crea la base de nombres):
 ```
-docker-compose up
+docker-compose up -d app
 ```
 
-**3.** Correr el dm
-```
-docker-compose run app python columnistos_bot.py -dm
-```
+Con esto ya se puede poner el scrapper a funcionar.
 
-**4.** Correr el tweet
-```
-docker-compose run app python columnistos_bot.py -tweet
-```
 Si se desea comenzar con base nueva, borrar diarios/diarios.sqlite y volver al punto 2
+
+Además esta otra funcionalidad es importante: 
+
+## Mensaje directo
+
+Se utiliza para corregir nombres sin género y otros avisos:
+
+OBS: antes de correr este comando se deben configurar los ususarios en `columnistos_bot.py`
+
+Comando para enviar el mensaje:
+```
+docker-compose run --rm app python columnistos_bot.py -dm
+```
+
+## Tuit
+
+Luego de dos días de correr el bot, **se puede empezar a tuitear**, con este comando:
+
+```
+docker-compose run --rm app python columnistos_bot.py -tweet
+```
+
+## Exponer los resultados
+
+El siguiente comando expone los resultados como un .csv en el puerto 8095: 
+```
+docker-compose run --rm app python columnistos_bot.py -dm
+```
+
+## Un ejemplo de CRON con docker:
+
+```
+BIN=/usr/local/bin
+APP=/tu-carpeta/columnistos-docker
+USUARIO=tu-usuario
+# Corro el crawler a medianoche y DM por si hay algo que corregir
+01 00 * * * $USUARIO cd $APP && $BIN/docker-compose up -d app && $BIN/docker-compose run --rm app python columnistos_bot.py -dm
+# Publico csv
+20 00 * * * $USUARIO cd $APP && ./columnistos-pub.sh
+# Corro el crawler cada 4 horas
+0 */4 * * * $USUARIO $BIN/docker-compose -f $APP/docker-compose.yml up -d app
+# Twit a las 8 am
+0 8 * * * $USUARIO $BIN/docker-compose -f $APP/docker-compose.yml run --rm app python columnistos_bot.py -tweet
+```
 
 [@columnistos]: https://twitter.com/columnistos
 [COLLABORATORS.md]: COLLABORATORS.md
