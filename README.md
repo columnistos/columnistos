@@ -134,10 +134,10 @@ También copiar **docker-run.sh-sample** a **docker-run.sh** y cambiar los valor
 
 **2.** Levantar el contenedeor (la primer vez va a demorar pues instala todas las dependencias y crea la base de nombres):
 ```
-docker-compose up -d app
+docker-compose up app
 ```
 
-Con esto ya se puede poner el scrapper a funcionar.
+Con esto ya se puede poner el scrapper a funcionar, corriendo cada vez: `docker-compose up -d app`
 
 Si se desea comenzar con base nueva, borrar el archivo **diarios.sqlite** que está dentro de la carpeta **diarios** y volver al punto 2
 
@@ -164,13 +164,13 @@ docker-compose run --rm app python columnistos_bot.py -tweet
 
 ## Exponer los resultados
 
-*1.* Exportar la base a la carpeta `public` en formato csv con este comando:
+**1.** Exportar la base a la carpeta `public` en formato csv con este comando:
 
 ```
 ./columnistos-pub.sh PAIS-o-REGION
 ```
 
-*2.* Publicar la carpeta `public` usando servidor web en el puerto 8095:
+**2.** Publicar la carpeta `public` usando servidor web en el puerto 8095:
 
 ```
 docker-compose up -d web
