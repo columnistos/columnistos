@@ -17,11 +17,6 @@ services:
     restart: unless-stopped
     ports:
       - "8095:80"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost"]
-      interval: 5m
-      timeout: 10s
-      retries: 3
     security_opt:
       - no-new-privileges:true
     volumes:
