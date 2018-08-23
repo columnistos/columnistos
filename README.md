@@ -139,7 +139,7 @@ docker-compose up -d app
 
 Con esto ya se puede poner el scrapper a funcionar.
 
-Si se desea comenzar con base nueva, borrar diarios/diarios.sqlite y volver al punto 2
+Si se desea comenzar con base nueva, borrar el archivo **diarios.sqlite** que está dentro de la carpeta **diarios** y volver al punto 2
 
 Además esta otra funcionalidad es importante: 
 
@@ -147,7 +147,7 @@ Además esta otra funcionalidad es importante:
 
 Se utiliza para corregir nombres sin género y otros avisos:
 
-OBS: antes de correr este comando se deben configurar los ususarios en `columnistos_bot.py`
+**OBS:** antes de correr este comando se deben configurar los ususarios de twitter en `columnistos_bot.py`
 
 Comando para enviar el mensaje:
 ```
@@ -164,24 +164,35 @@ docker-compose run --rm app python columnistos_bot.py -tweet
 
 ## Exponer los resultados
 
-El siguiente comando expone los resultados como un .csv en el puerto 8095: 
+*1.* Exportar la base a la carpeta `public` en formato csv con este comando:
+
 ```
-docker-compose run --rm app python columnistos_bot.py -dm
+./columnistos-pub.sh PAIS-o-REGION
 ```
 
-## Un ejemplo de CRON con docker:
+*2.* Publicar la carpeta `public` usando servidor web en el puerto 8095:
+
+```
+docker-compose up -d web
+```
+
+Esto deja corriendo un **servidor web**, quiere decir que si se apaga la computadora o se hace un `docker-compose stop` la base csv ya no estará públicamente dispinible. 
+
+Para verlo en tu computaodra local, puedes acceder a localhost:8095 en tu navegador. 
+
+## Un ejemplo de CRON con docker para Paraguay:
 
 ```
 BIN=/usr/local/bin
-APP=/tu-carpeta/columnistos-docker
-USUARIO=tu-usuario
-# Corro el crawler a medianoche y DM por si hay algo que corregir
+APP=/carpeta-donde-esta-instalado-el-bot/columnistos-docker
+USUARIO=usuario-unix-con-capacidad-de-ejecutar-docker-compose
+# Corro el crawler a las 00:01 y DM por si hay algo que corregir
 01 00 * * * $USUARIO cd $APP && $BIN/docker-compose up -d app && $BIN/docker-compose run --rm app python columnistos_bot.py -dm
-# Publico csv
-20 00 * * * $USUARIO cd $APP && ./columnistos-pub.sh
+# Publico csv a las 00:20
+20 00 * * * $USUARIO cd $APP && ./columnistos-pub.sh paraguay
 # Corro el crawler cada 4 horas
 0 */4 * * * $USUARIO $BIN/docker-compose -f $APP/docker-compose.yml up -d app
-# Twit a las 8 am
+# Twit a las 8:00
 0 8 * * * $USUARIO $BIN/docker-compose -f $APP/docker-compose.yml run --rm app python columnistos_bot.py -tweet
 ```
 
