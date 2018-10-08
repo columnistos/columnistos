@@ -499,6 +499,7 @@ def main():
         logging.info('Need to send/process DM')
         check_dms(api, auth_ids)
         data_to_send = get_author_no_gender()
+        logging.debug(data_to_send)
         send_dms(api, data_to_send, auth_ids)
 
     if args['tweet']:
