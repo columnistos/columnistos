@@ -1,6 +1,7 @@
 #!/bin/sh
 export TESTING='True'
 export LOG_FOLDER='./logs/'
+export LOG_LEVEL='DEBUG'
 
 export TWITTER_CONSUMER_KEY=""
 export TWITTER_CONSUMER_SECRET=""

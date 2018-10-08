@@ -17,6 +17,7 @@ from TwitterAPI import TwitterAPI
 
 TESTING = os.environ.get('TESTING', 'True') == 'True'
 LOG_FOLDER = os.environ.get('LOG_FOLDER', '')
+LOG_LEVEL = os.environ.get('LOG_LEVEL', 'INFO').upper()
 
 AUTHORIZED_SCREEN_NAMES = [
     'admin_screen_name',  # Twitter user name of persons that can send DMs
@@ -478,7 +479,7 @@ def main():
     logging.basicConfig(
         filename=LOG_FOLDER + 'columnistos.log',
         format='%(asctime)s %(name)s %(levelname)8s: %(message)s',
-        level=logging.INFO)
+        level=LOG_LEVEL)
     logging.getLogger("requests").setLevel(logging.WARNING)
     logging.info('Starting script')
 
