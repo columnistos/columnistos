@@ -213,7 +213,7 @@ def screen_names_to_id(api, screen_names):
 
 def tweet_text(api, text_to_tweet):
     if TESTING:
-        print (text_to_tweet)
+        print(text_to_tweet)
         return True
     r = api.request('statuses/update', {'status': text_to_tweet})
     if r.status_code != 200:
@@ -222,6 +222,9 @@ def tweet_text(api, text_to_tweet):
 
 
 def send_dm(api, recipient_id, text_to_dm):
+    if TESTING:
+        print(text_to_dm)
+        return True
     event = {
         "event": {
             "type": "message_create",
@@ -329,30 +332,35 @@ def send_dms(api, texts_to_dm, auth_ids):
     db = dataset.connect(SQLITE_URL)
     dms = db['dms']
     for admin_id in auth_ids:
-        for text in texts_to_dm:
+        for author_to_dm in texts_to_dm:
+            author = author_to_dm['author']
+            article = author_to_dm['article']
             ddg_qs = {
-                'q': text['author'],
+                'q': author['author'],
                 'iax': 'images',
                 'ia': 'images'
             }
             google_qs = {
-                'q': text['author'],
+                'q': author['author'],
                 'tbm': 'isch'
             }
             dm = ("Nuevo autor {author} con Id {id}, respondé {id} f "
                   "o {id} v o {id} x\n"
                   "DDG Images: https://duckduckgo.com/?{ddg}\n"
-                  "Google Images: https://google.com/search?{google}"
+                  "Google Images: https://google.com/search?{google}\n"
+                  "Nota: {link}"
                   ).format(
-                      author=text['author'],  id=text['id'],
-                      ddg=urlencode(ddg_qs), google=urlencode(google_qs))
+                      author=author['author'],  id=author['id'],
+                      ddg=urlencode(ddg_qs), google=urlencode(google_qs),
+                      link=article['url']
+                  )
             dm_result = send_dm(api, admin_id, dm)
             if not dm_result:
                 logging.warning('Sending DM to {} failed'.format(
                     admin_screen_name))
                 return False
             # add/update in table of sent DMs
-            dms.upsert(dict(author_id=text['id'],
+            dms.upsert(dict(author_id=author['id'],
                             added=dt.datetime.utcnow()),
                        ['author_id'])
     return True
@@ -362,7 +370,9 @@ def get_author_no_gender():
     authors_no_gender = list()
     db = dataset.connect(SQLITE_URL)
     authors = db['authors']
+    articles = db['articles']
     dms = db['dms']
+
     for author in authors.find(gender=None):
         authors_no_gender.append(author)
     for author in authors.find(gender='A'):
@@ -383,7 +393,16 @@ def get_author_no_gender():
     else:
         unsent_authors = authors_no_gender
 
-    return unsent_authors
+    # add link to last article by authors to send
+    unsent_authors_dicts = list()
+    for author in unsent_authors:
+        last_article = articles.find_one(author_id=author['id'])
+        unsent_authors_dicts.append({
+            'author': author,
+            'article': last_article
+        })
+
+    return unsent_authors_dicts
 
 
 def get_stats(site):
