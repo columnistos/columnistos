@@ -1,0 +1,5 @@
+30 * * * * /home/gabygarro/Documents/columnistos/runcrawlers_cr.sh > /home/gabygarro/Documents/columnistos/logs/croncrawl.log 2>&l
+
+*/15 * * * * /home/gabygarro/Documents/columnistos/runbotdm.sh > /home/gabygarro/Documents/columnistos/logs/crondm.log 2>&l
+
+0 10 * * * /home/gabygarro/Documents/columnistos/runbottweet.sh > /home/gabygarro/Documents/columnistos/logs/cron.log 2>&l
