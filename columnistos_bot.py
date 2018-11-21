@@ -11,18 +11,15 @@ import sys
 from urllib.parse import urlencode
 
 import dataset
-import tweepy
 
 from pytz import timezone
-from tweepy.error import TweepError
+from TwitterAPI import TwitterAPI
 
 
 TESTING = os.environ.get('TESTING', 'True') == 'True'
 LOG_FOLDER = os.environ.get('LOG_FOLDER', '')
+LOG_LEVEL = os.environ.get('LOG_LEVEL', 'INFO').upper()
 
-# Twitter user name of persons that can send DMs
-# and that will receive DM from the bot
-# use 'screen_name' NOT '@screen_name'
 AUTHORIZED_SCREEN_NAMES = [
     'ladycapybara',
     'unahistoriadora',
@@ -35,9 +32,6 @@ COMPLETE_NAMES = {
     'crhoy': 'CRHoy',
     'delfino': 'DelfinoCR',
     'larepublica': 'La República',
-    # 'extra': 'La Extra',
-    # 'prensalibre': 'La Prensa Libre',
-    # 'mundocr': 'MundoCR',
 }
 MIN_NEW_ARTICLES = 2
 MIN_PERCENT_SOME = 45
@@ -126,8 +120,6 @@ DAILY_REPORT = [
 
 
 def select_text(stats):
-    # TODO para poder usar los xxx_DAYS o xxx_DAY tengo que guardar en la BD
-    # la cantidad de días que cada medio lleva con articulos solo de un genero
     percent_fem = int(stats['fem'] / stats['total'] * 100)
     logging.info('Stats: {} percent: {}'.format(stats, percent_fem))
     if stats['fem'] == 0 and stats['days'] <= 0:
@@ -185,63 +177,102 @@ def daily_tweet(daily_stats):
         t_count += row['total']
     if len(daily_stats) > 1:
         percent_t = round(f_count / t_count * 100)
-        text += f'\n ———\n Total: {percent_t} % ({f_count}) de {t_count})'
+        text += f'\n ———\n Total: {percent_t} % ({f_count} de {t_count})'
     return text
 
 
 def test_twitter(api):
-    print(api.me().name)
+    r = api.request('users/show', {'screen_name': AUTHORIZED_SCREEN_NAMES[0]})
+    if r.status_code == 200:
+        print('Twitter API working')
+        print(r.json()['id'])
+    else:
+        print('Problem connecting to Twitter API')
+
+
+def screen_names_to_id(api, screen_names):
+    """
+    screen_names: list of screen names with no leading @
+    returns: list of user ids
+    """
+    r = api.request('users/lookup', {'screen_name': screen_names})
+    if r.status_code != 200:
+        return False
+    return [user['id'] for user in r.json()]
 
 
 def tweet_text(api, text_to_tweet):
     if TESTING:
         print (text_to_tweet)
         return True
-    try:
-        api.update_status(status=text_to_tweet)
-    except:
-        print (sys.exc_info()[0])
+    r = api.request('statuses/update', {'status': text_to_tweet})
+    if r.status_code != 200:
         return False
     return True
 
 
-def check_dms(api):
+def send_dm(api, recipient_id, text_to_dm):
+    if TESTING:
+        print(text_to_dm)
+        return True
+    event = {
+        "event": {
+            "type": "message_create",
+            "message_create": {
+                "target": {
+                    "recipient_id": recipient_id
+                },
+                "message_data": {
+                    "text": text_to_dm
+                }
+            }
+        }
+    }
+    r = api.request('direct_messages/events/new', json.dumps(event))
+    if r.status_code != 200:
+        logging.error('Problem sending DM, error: {}, message: {}'.format(
+            r.status_code, r.text))
+        return False
+    return True
+
+
+def check_dms(api, auth_ids):
     if os.path.exists('last_checked_dm.json'):
         with open('last_checked_dm.json') as ld:
             data = json.load(ld)
     else:
         data = {'last_dm': 0}
 
-    response = api.direct_messages(since_id=data['last_dm'])
+    r = api.request('direct_messages/events/list')
     db = dataset.connect(SQLITE_URL)
     dms = db['dms']
     authors = db['authors']
-    for dm in response:
-        if dm.sender.screen_name not in AUTHORIZED_SCREEN_NAMES:
+    for dm in r.json()['events'][::-1]:
+        if int(dm['message_create']['target']['recipient_id']) in auth_ids:
+            # dm sent by bot, skip
+            continue
+        elif int(dm['message_create']['sender_id']) not in auth_ids:
             logging.warning(
-                'DM from unauthorized account {} with id {}'.format(
-                    dm.sender.screen_name, dm.sender.id))
+                'DM from unauthorized account with id {}'.format(
+                    dm['message_create']['sender_id']))
+        elif int(dm['id']) <= data['last_dm']:
+            continue
         else:
-            if dm.id > data['last_dm']:
-                data['last_dm'] = dm.id
-            response = dm.text.strip().split()
+            data['last_dm'] = int(dm['id'])
+            response = dm['message_create']['message_data'][
+                'text'].strip().split()
             if len(response) != 2:
-                api.send_direct_message(user_id=dm.sender.id,
-                                        text="No entiendo el mensaje")
+                send_dm(api, dm['message_create']['sender_id'],
+                        "No entiendo el mensaje")
                 continue
             elif not authors.find_one(id=response[0]):
-                api.send_direct_message(
-                    user_id=dm.sender.id,
-                    text="No encontré al autor con el ID {}".format(
-                        response[0])
-                )
+                send_dm(api, dm['message_create']['sender_id'],
+                        "No encontré al autor con el ID {}".format(
+                            response[0]))
                 continue
             elif response[1][0].upper() not in ['V', 'F', 'X']:
-                api.send_direct_message(
-                    user_id=dm.sender.id,
-                    text="No entendí el genero {}".format(
-                        response[1])
-                )
+                send_dm(api, dm['message_create']['sender_id'],
+                        "No entendí el genero {}".format(response[1]))
                 continue
 
             author = authors.find_one(id=response[0])
@@ -255,39 +286,30 @@ def check_dms(api):
                     authors.update(dict(id=response[0],
                                         gender=response[1][0]),
                                    ['id'])
-                    api.send_direct_message(
-                            user_id=dm.sender.id,
-                            text="Los datos de {} ({}) se cambiaron".format(
-                                author['author'], author['id'])
-                        )
+                    send_dm(api, dm['message_create']['sender_id'],
+                            "Los datos de {} ({}) se cambiaron".format(
+                                author['author'], author['id']))
                     logging.info('Gender of {} set to {}'.format(
                         author['author'], response[1][0]))
                 elif author['gender'] == response[1][0]:
-                    api.send_direct_message(
-                        user_id=dm.sender.id,
-                        text="Gracias por los datos de {} ({})".format(
-                            author['author'], author['id'])
-                    )
+                    send_dm(api, dm['message_create']['sender_id'],
+                            "Gracias por los datos de {} ({})".format(
+                                author['author'], author['id']))
                 else:
-                    for admin_screen_name in AUTHORIZED_SCREEN_NAMES:
-                        api.send_direct_message(
-                            screen_name=admin_screen_name,
-                            text=("Tu respuesta de {} no coincide con otras "
-                                  "cuando se pongan de acuerdo manden {} g! "
-                                  "(g = f/v/x)").format(
-                                author['author'], author['id']
-                            )
-                        )
+                    for admin_id in auth_ids:
+                        send_dm(api, admin_id,
+                                ("Tu respuesta de {} no coincide con otras "
+                                 "cuando se pongan de acuerdo manden {} g! "
+                                 "(g = f/v/x)").format(
+                                    author['author'], author['id']))
             else:
                 authors.update(dict(id=response[0],
                                     gender=response[1][0]),
                                ['id'])
                 dms.delete(author_id=response[0])
-                api.send_direct_message(
-                        user_id=dm.sender.id,
-                        text="Gracias por los datos de {} ({})".format(
-                            author['author'], author['id'])
-                    )
+                send_dm(api, dm['message_create']['sender_id'],
+                        "Gracias por los datos de {} ({})".format(
+                            author['author'], author['id']))
                 logging.info('Gender of {} set to {}'.format(
                     author['author'], response[1][0]))
     with open('last_checked_dm.json', 'w') as lt:
@@ -296,37 +318,41 @@ def check_dms(api):
     return True
 
 
-def send_dms(api, texts_to_dm):
+def send_dms(api, texts_to_dm, auth_ids):
     db = dataset.connect(SQLITE_URL)
     dms = db['dms']
-    for admin_screen_name in AUTHORIZED_SCREEN_NAMES:
-        try:
-            for text in texts_to_dm:
-                ddg_qs = {
-                    'q': text['author'],
-                    'iax': 'images',
-                    'ia': 'images'
-                }
-                google_qs = {
-                    'q': text['author'],
-                    'tbm': 'isch'
-                }
-                dm = ("Nuevo autor {author} con Id {id}, respondé {id} f "
-                      "o {id} v o {id} x\n"
-                      "DDG Images: https://duckduckgo.com/?{ddg}\n"
-                      "Google Images: https://google.com/search?{google}"
-                      ).format(
-                          author=text['author'],  id=text['id'],
-                          ddg=urlencode(ddg_qs), google=urlencode(google_qs))
-                api.send_direct_message(screen_name=admin_screen_name, text=dm)
-                # add/update in table of sent DMs
-                dms.upsert(dict(author_id=text['id'],
-                                added=dt.datetime.utcnow()),
-                           ['author_id'])
-        except TweepError:
-            logging.warning('Sending DM to {} failed'.format(
-                admin_screen_name))
-            return False
+    for admin_id in auth_ids:
+        for author_to_dm in texts_to_dm:
+            author = author_to_dm['author']
+            article = author_to_dm['article']
+            ddg_qs = {
+                'q': author['author'],
+                'iax': 'images',
+                'ia': 'images'
+            }
+            google_qs = {
+                'q': author['author'],
+                'tbm': 'isch'
+            }
+            dm = ("Nuevo autor {author} con Id {id}, respondé {id} f "
+                  "o {id} v o {id} x\n"
+                  "DDG Images: https://duckduckgo.com/?{ddg}\n"
+                  "Google Images: https://google.com/search?{google}\n"
+                  "Nota: {link}"
+                  ).format(
+                      author=author['author'],  id=author['id'],
+                      ddg=urlencode(ddg_qs), google=urlencode(google_qs),
+                      link=article['url']
+                  )
+            dm_result = send_dm(api, admin_id, dm)
+            if not dm_result:
+                logging.warning('Sending DM to {} failed'.format(
+                    admin_id))
+                return False
+            # add/update in table of sent DMs
+            dms.upsert(dict(author_id=author['id'],
+                            added=dt.datetime.utcnow()),
+                       ['author_id'])
     return True
 
 
@@ -334,7 +360,9 @@ def get_author_no_gender():
     authors_no_gender = list()
     db = dataset.connect(SQLITE_URL)
     authors = db['authors']
+    articles = db['articles']
     dms = db['dms']
+
     for author in authors.find(gender=None):
         authors_no_gender.append(author)
     for author in authors.find(gender='A'):
@@ -355,7 +383,16 @@ def get_author_no_gender():
     else:
         unsent_authors = authors_no_gender
 
-    return unsent_authors
+    # add link to last article by authors to send
+    unsent_authors_dicts = list()
+    for author in unsent_authors:
+        last_article = articles.find_one(author_id=author['id'])
+        unsent_authors_dicts.append({
+            'author': author,
+            'article': last_article
+        })
+
+    return unsent_authors_dicts
 
 
 def get_stats(site):
@@ -451,7 +488,7 @@ def main():
     logging.basicConfig(
         filename=LOG_FOLDER + 'columnistos.log',
         format='%(asctime)s %(name)s %(levelname)8s: %(message)s',
-        level=logging.INFO)
+        level=LOG_LEVEL)
     logging.getLogger("requests").setLevel(logging.WARNING)
     logging.info('Starting script')
 
@@ -461,20 +498,19 @@ def main():
     access_token = os.environ['TWITTER_ACCESS_TOKEN']
     access_token_secret = os.environ['TWITTER_ACCESS_TOKEN_SECRET']
 
-    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-    auth.secure = True
-    auth.set_access_token(access_token, access_token_secret)
-    api = tweepy.API(auth)
-
+    api = TwitterAPI(consumer_key, consumer_secret,
+                     access_token, access_token_secret)
+    auth_ids = screen_names_to_id(api, AUTHORIZED_SCREEN_NAMES)
     db = dataset.connect(SQLITE_URL)
 
     # DMs
     if args['dm']:
         logging.info('Checking if DM needed')
         logging.info('Need to send/process DM')
-        check_dms(api)
+        check_dms(api, auth_ids)
         data_to_send = get_author_no_gender()
-        send_dms(api, data_to_send)
+        logging.debug(data_to_send)
+        send_dms(api, data_to_send, auth_ids)
 
     if args['tweet']:
         logging.info('Checking if ready to tweet')
