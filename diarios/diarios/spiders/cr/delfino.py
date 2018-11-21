@@ -9,7 +9,8 @@ class DelfinoSpider(scrapy.Spider):
     name = 'delfino'
     allowed_domains = ['delfino.cr']
     start_urls = [
-        'http://delfino.cr/opinion/'
+        'https://delfino.cr/opinion/',
+        'https://delfino.cr/opinion/page/2'
     ]
 
     def parse(self, response):
@@ -26,11 +27,11 @@ class DelfinoSpider(scrapy.Spider):
     def parse_article(self, selector, response):
         loader = ItemLoader(DiariosItem(), selector=selector)
 
-        loader.add_xpath('title', './/h3[@class="card-title"]/text()')
+        loader.add_xpath('title', './/h3[@class="card-title ellipsizer"]/text()')
 
         # Quitar los 4 primeros caracteres "Por "
         autor = selector.xpath('./h5[@class="card-author"]/text()').extract_first().title()[4:]
         loader.add_value('author', autor)
-        
+
         loader.add_xpath('url', './a/@href')
         return loader.load_item()
