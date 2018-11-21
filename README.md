@@ -85,7 +85,7 @@ En la base se va a crear una table `articles` para los artículos y otra `author
 
 # Twitter
 
-Para lo que sigue se necesitas crear una nueva cuenta de Twitter desde la cuál van a mandar los mensajes y crear una app para que esa cuenta tenga permisos para usar la API de Twitter. Usando la nueva cuenta ir a [apps.twitter.com](https://apps.twitter.com/), necesitan los datos para completar en los siguientes `.sh` las variables:
+Para lo que sigue se necesitas crear una nueva cuenta de Twitter desde la cuál van a mandar los mensajes y crear una app para que esa cuenta tenga permisos para usar la API de Twitter. Usando la nueva cuenta ir a [apps.twitter.com](https://apps.twitter.com/), habilitar la opción de mandaar DMs para la aplicación. Necesitan copiar algunos valores de esta página para poder completar en los `.sh` las variables:
 
 ```
 export TWITTER_CONSUMER_KEY=""
