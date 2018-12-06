@@ -15,7 +15,7 @@ class DelfinoSpider(scrapy.Spider):
     def parse(self, response):
         """
         @url http://delfino.cr/opinion/
-        @returns items 1 6
+        @returns items 1 18
         @returns requests 0 0
         @scrapes author title url
         """
