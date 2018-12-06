@@ -11,7 +11,7 @@
 
 BOT_NAME = 'diarios'
 
-SPIDER_MODULES = ['diarios.spiders', 'diarios.spiders.cr']
+SPIDER_MODULES = ['diarios.spiders', 'diarios.spiders.ar', 'diarios.spiders.cl', 'diarios.spiders.py', 'diarios.spiders.cr']
 NEWSPIDER_MODULE = 'diarios.spiders'
 
 SQLITE_URL = 'sqlite:///diarios.sqlite'
@@ -19,7 +19,7 @@ SQLITE_AUTHORS_TABLE = 'authors'
 SQLITE_ARTICLES_TABLE = 'articles'
 SQLITE_NAMES_TABLE = 'names'
 
-TIMEZONE = 'America/Costa_Rica'
+TIMEZONE = 'America/Buenos_Aires'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'diarios (+http://www.yourdomain.com)'

@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 import argparse
 import datetime as dt
 import json
@@ -21,13 +20,24 @@ LOG_FOLDER = os.environ.get('LOG_FOLDER', '')
 LOG_LEVEL = os.environ.get('LOG_LEVEL', 'INFO').upper()
 
 AUTHORIZED_SCREEN_NAMES = [
-    'ladycapybara',
-    'unahistoriadora',
+    'admin_screen_name',  # Twitter user name of persons that can send DMs
+    'another_admin_screen_name',  # and that will receive DM from the bot
+    # use 'screen_name' NOT '@screen_name'
 ]
 SQLITE_URL = 'sqlite:///diarios/diarios.sqlite'
 HOURS_WAIT_DM = 12
-TIMEZONE = 'America/Costa_Rica'
+TIMEZONE = 'America/Buenos_Aires'
 COMPLETE_NAMES = {
+    'clarin': 'Clarín',
+    'lanacion': 'La Nación',
+    'pagina12': 'Página/12',
+    'perfil': 'Perfil',
+    'abc': 'ABC Color',
+    'lanacionpy': 'La Nación',
+    'ultimahora': 'Última Hora',
+    'elmercurio': 'El Mercurio',
+    'latercera': 'La Tercera',
+    't13': 'T13',
     'nacion': 'La Nación',
     'crhoy': 'CRHoy',
     'delfino': 'DelfinoCR',
@@ -203,7 +213,7 @@ def screen_names_to_id(api, screen_names):
 
 def tweet_text(api, text_to_tweet):
     if TESTING:
-        print (text_to_tweet)
+        print(text_to_tweet)
         return True
     r = api.request('statuses/update', {'status': text_to_tweet})
     if r.status_code != 200:
@@ -347,7 +357,7 @@ def send_dms(api, texts_to_dm, auth_ids):
             dm_result = send_dm(api, admin_id, dm)
             if not dm_result:
                 logging.warning('Sending DM to {} failed'.format(
-                    admin_id))
+                    admin_screen_name))
                 return False
             # add/update in table of sent DMs
             dms.upsert(dict(author_id=author['id'],
