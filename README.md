@@ -115,6 +115,10 @@ Este es el paso que genera los tweets del resumen del día anterior al que se co
 runbottweet.sh
 ```
 
+# Dump
+
+En el archivo `dump_db.sh` hay instrucciones para sumar el dump que se genera al repositorio de la organización.
+
 # Cron
 
 Para que todo funcione automaticamente hay que agregar los `.sh` a algún cronjob. En el caso de [@columnistos] la configuración actual es:
@@ -123,6 +127,7 @@ Para que todo funcione automaticamente hay que agregar los `.sh` a algún cronjo
 30 * * * * $HOME/columnistos/runcrawlers.sh
 */15 * * * * $HOME/columnistos/runbotdm.sh
 0 10 * * * $HOME/columnistos/runbottweet.sh
+5 10 * * * $HOME/columnistos/dump_db.sh
 ```
 # Instalación y uso con Docker
 
