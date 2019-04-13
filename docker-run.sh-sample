@@ -1,7 +1,11 @@
 #!/bin/bash
 
+# Agregar aquí los diarios que desea escrapear
+lista='lanacionpy abc ultimahora'
+carpeta=/usr/src/app
+
 # Verifico que exista la base sino la creo 
-if [ -f /usr/src/app/diarios/diarios.sqlite ]; then
+if [ -f $carpeta/diarios/diarios.sqlite ]; then
   echo -e "»»»»»»»»»»»»»»»»»»»»»»»"
   echo -e "»» Ya existe la base »»"
   echo -e "»»»»»»»»»»»»»»»»»»»»»»»"
@@ -9,10 +13,16 @@ else
   echo -e "»»»»»»»»»»»»»»»»»»»»»»»"
   echo -e "»» Se inicializa base »"
   echo -e "»»»»»»»»»»»»»»»»»»»»»»»"
-  cd diarios && scrapy crawl nombres
+  # Cargo conenido de diarios
+  cp -R diariosAux/* diarios/ && rm -rf diariosAux
+  cd $carpeta/diarios && scrapy crawl nombres
 fi
 
-# Ahora sí corro los crawlers. Comente y descomente a gusto
-cd /usr/src/app && ./runcrawlers.sh
-#cd /usr/src/app && ./runcrawlers_chile.sh
-#cd /usr/src/app && ./runcrawlers_paraguay.sh
+# Recorro la lista y ejecuto
+cd $carpeta/diarios
+for diario in $lista
+do
+  #LOG_LEVEL puede ser: CRITICAL, ERROR, WARNING, INFO, DEBUG
+  scrapy crawl $diario -s LOG_LEVEL='ERROR' -s LOG_FILE=log_$diario.log
+done
+

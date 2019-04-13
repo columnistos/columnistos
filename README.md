@@ -142,23 +142,75 @@ Para que todo funcione automaticamente hay que agregar los `.sh` a algún cronjo
 ```
 # Instalación y uso con Docker
 
-**1.** Copiar el archivo **docker.env-sample** a **docker.env** y agregar los valores deseados. También copiar **docker-run.sh-sample** a **docker-run.sh** y cambiar los valores de los crawls según el país. 
+## Instalar y correr el bot
 
-**2.** Correr la instalación (si es que no hay base) y el crawler:
+**1.** Copiar el archivo **docker.env-sample** a **docker.env** y agregar los valores deseados, es decir, las claves de la API de twitter y un par de parámetros más.
+
+También copiar **docker-run.sh-sample** a **docker-run.sh** y cambiar los valores de los diarios a escrapear. 
+
+**2.** Levantar el contenedeor (la primer vez va a demorar pues instala todas las dependencias y crea la base de nombres):
 ```
-docker-compose up
+docker-compose up app
 ```
 
-**3.** Correr el dm
+Con esto ya se puede poner el scrapper a funcionar, corriendo cada vez: `docker-compose up -d app`
+
+Si se desea comenzar con base nueva, borrar el archivo **diarios.sqlite** que está dentro de la carpeta **diarios** y volver al punto 2
+
+Además esta otra funcionalidad es importante: 
+
+## Mensaje directo
+
+Se utiliza para corregir nombres sin género y otros avisos:
+
+**OBS:** antes de correr este comando se deben configurar los ususarios de twitter en `columnistos_bot.py`
+
+Comando para enviar el mensaje:
 ```
-docker-compose run app python columnistos_bot.py -dm
+docker-compose run --rm app python columnistos_bot.py -dm
 ```
 
-**4.** Correr el tweet
+## Tuit
+
+Luego de dos días de correr el bot, **se puede empezar a tuitear**, con este comando:
+
 ```
-docker-compose run app python columnistos_bot.py -tweet
+docker-compose run --rm app python columnistos_bot.py -tweet
 ```
-Si se desea comenzar con base nueva, borrar diarios/diarios.sqlite y volver al punto 2
+
+## Exponer los resultados
+
+**1.** Exportar la base a la carpeta `public` en formato csv con este comando:
+
+```
+./columnistos-pub.sh PAIS-o-REGION
+```
+
+**2.** Publicar la carpeta `public` usando servidor web en el puerto 8095:
+
+```
+docker-compose up -d web
+```
+
+Esto deja corriendo un **servidor web**, quiere decir que si se apaga la computadora o se hace un `docker-compose stop` la base csv ya no estará públicamente dispinible. 
+
+Para verlo en tu computaodra local, puedes acceder a localhost:8095 en tu navegador. 
+
+## Un ejemplo de CRON con docker para Paraguay:
+
+```
+BIN=/usr/local/bin
+APP=/carpeta-donde-esta-instalado-el-bot/columnistos-docker
+USUARIO=usuario-unix-con-capacidad-de-ejecutar-docker-compose
+# Corro el crawler a las 00:01 y DM por si hay algo que corregir
+01 00 * * * $USUARIO cd $APP && $BIN/docker-compose up -d app && $BIN/docker-compose run --rm app python columnistos_bot.py -dm
+# Publico csv a las 00:20
+20 00 * * * $USUARIO cd $APP && ./columnistos-pub.sh paraguay
+# Corro el crawler cada 4 horas
+0 */4 * * * $USUARIO $BIN/docker-compose -f $APP/docker-compose.yml up -d app
+# Twit a las 8:00
+0 8 * * * $USUARIO $BIN/docker-compose -f $APP/docker-compose.yml run --rm app python columnistos_bot.py -tweet
+```
 
 [@columnistos]: https://twitter.com/columnistos
 [COLLABORATORS.md]: COLLABORATORS.md

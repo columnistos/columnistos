@@ -20,16 +20,24 @@ class UltimahoraSpider(scrapy.Spider):
         @returns requests 0 0
         @scrapes author title url
         """
-        selectors = response.xpath('//*[@class="object-opinion-2016"]/div[2]/div/div')
+        selectors = response.xpath('//div[@class="persons"]/div/div')
         for selector in selectors:
             yield self.parse_article(selector, response)
 
     def parse_article(self, selector, response):
         import re
         loader = ItemLoader(DiariosItem(), selector=selector)
-        autor = selector.xpath('.//span//a//text()').extract_first().title()
+        #Extraigo autor y convierto en mayus y borro espacios
+        autor = selector.xpath('.//div[@class="person-name"]/a/text()').extract_first().title().strip()
+        # Saco símbolos raros
         autor = re.sub('[^a-zA-ZñÑáéíóúÁÉÍÓÚ ]', '', autor)
+        # Trae "Por" al principio así que lo saco
+        if autor[:4] == "Por ":
+            autor = autor[4:]
+        # Guardo autor
         loader.add_value('author', autor)
-        loader.add_xpath('title', './/h3//a//text()')
+        # Guardo título
+        loader.add_xpath('title', './/h3//text()'.strip())
+        # Guardo URL
         loader.add_xpath('url', './/h3//@href')
         return loader.load_item()

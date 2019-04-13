@@ -1,6 +1,7 @@
 # Local database
 # No queremos que se haga commit de la base 
-diarios.sqlite
+public/
+*.sqlite
 *.env
 *.csv
 nbproject/

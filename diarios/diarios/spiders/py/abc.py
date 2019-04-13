@@ -27,9 +27,12 @@ class AbcSpider(scrapy.Spider):
     def parse_article(self, selector, response):
         import re
         loader = ItemLoader(DiariosItem(), selector=selector)
-        autor = selector.xpath('.//h3//text()').extract_first().title()
+        # Busco autor
+        autor = selector.xpath('.//h3//text()').extract_first().title().strip()
         autor = re.sub('[^a-zA-ZñÑáéíóúÁÉÍÓÚ ]', '', autor)
         loader.add_value('author', autor)
-        loader.add_xpath('title', './/h2//a//text()')
+        # Guardo título
+        loader.add_xpath('title', './/h2//a//text()'.strip())
+        # Guardo URL
         loader.add_xpath('url', './/h2//@href')
         return loader.load_item()

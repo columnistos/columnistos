@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
   app:
@@ -7,8 +7,17 @@ services:
       dockerfile: Dockerfile
     #restart: unless-stopped
     env_file: docker.env
+    security_opt:
+      - no-new-privileges:true
     volumes:
-      - app:/usr/src/app
+      - ./diarios:/usr/src/app/diarios
       - /etc/localtime:/etc/localtime:ro
-volumes:
-  app:
+  web:
+    image: httpd:alpine
+    restart: unless-stopped
+    ports:
+      - "8095:80"
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - ./public:/usr/local/apache2/htdocs/

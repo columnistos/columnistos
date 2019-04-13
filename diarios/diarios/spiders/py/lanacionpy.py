@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 import scrapy
+import logging
 from scrapy.loader import ItemLoader
-
 from diarios.items import DiariosItem
 
+logging.basicConfig(level=logging.DEBUG)
 
 class LanacionpySpider(scrapy.Spider):
     name = 'lanacionpy'
@@ -25,17 +26,22 @@ class LanacionpySpider(scrapy.Spider):
             link = response.urljoin(selector.xpath('.//@href').extract_first())
             if link is not None:
                 yield scrapy.Request(link, callback=self.parse_article)
-        
 
-    
     def parse_article(self, response):
         import re
         selector = response.xpath('//*[@id="article-content"]')
         loader = ItemLoader(DiariosItem(), selector=selector)
-        #capitalizar el titulo y quitar los 4 primeros caracteres que es el "Por "
-        autor = response.xpath('//strong//text()').extract_first().title()[4:]
+        #Extraigo autor y convierto en mayus y borro espacios
+        autor = response.xpath('.//span[@class="author-name"]//text()').extract_first().title().strip()
+        # Saco símbolos raros
         autor = re.sub('[^a-zA-ZñÑáéíóúÁÉÍÓÚ ]', '', autor)
+        # Trae "Por" al principio así que lo saco
+        if autor[:4] == "Por ":
+             autor = autor[4:]
+        # Guardo autor
         loader.add_value('author', autor)
-        loader.add_value('title', response.xpath('//*[@class="headline huge normal-style "]/a/text()').extract_first())
+        # Guardo título
+        loader.add_value('title', response.xpath('//*[@class="title"]/h1/text()').extract_first().strip())
+        # Guardo URL
         loader.add_value('url', response.request.url)
         return loader.load_item()

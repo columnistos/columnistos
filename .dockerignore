@@ -1,0 +1,6 @@
+*.csv
+columnistos-resultados.sh
+docker-compose.yml
+docker.en*
+Dockerfile
+
