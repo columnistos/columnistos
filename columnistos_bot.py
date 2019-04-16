@@ -189,7 +189,7 @@ def daily_tweet(daily_stats):
         t_count += row['total']
     if len(daily_stats) > 1:
         percent_t = round(f_count / t_count * 100)
-        text += '\n ———\n Total: {percent_t} % ({f_count} de {t_count})'
+        text += f'\n ———\n Total: {percent_t} % ({f_count} de {t_count})'
     return text
 
 
@@ -473,10 +473,9 @@ def get_stats(site):
                 '%Y-%m-%dT%H:%M:%S%z')
             last_seen = last_seen.replace(tzinfo=None)
             days = yesterday - last_seen
-        days = 0
     else:
         days = yesterday - yesterday
-    return dict(total=total, fem=fem, var=total-fem, days=days,
+    return dict(total=total, fem=fem, var=total-fem, days=days.days,
                 last_id=last_id, medio=COMPLETE_NAMES[site['name']],
                 yesterday=yesterday)
 
