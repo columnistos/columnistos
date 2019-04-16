@@ -171,7 +171,9 @@ def select_text(stats):
 def daily_tweet(daily_stats):
     text = random.choice(DAILY_REPORT)
     escritas = random.choice(['escritas', 'firmadas'])
-    fecha = dt.datetime.strftime(daily_stats[0]['yesterday'], '%-d/%-m')
+    dia_semana = dt.datetime.strftime(daily_stats[0]['yesterday'], '%w')
+    dias_dict = {'0':'dom', '1':'lun', '2':'mar', '3':'mie', '4':'jue', '5':'vie', '6':'sab'} 
+    fecha = dias_dict[dia_semana] + dt.datetime.strftime(daily_stats[0]['yesterday'], ' %-d/%-m')
     text = text.format(escritas=escritas, fecha=fecha)
 
     f_count = 0
