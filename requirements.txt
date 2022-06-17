@@ -1,4 +1,4 @@
 dataset==1.0.3
 pytz==2017.3
-Scrapy==1.4.0
+Scrapy==2.6.1
 TwitterAPI==2.5.4
